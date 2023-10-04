@@ -1494,6 +1494,22 @@ Sidebar.prototype.addGeneralPalette = function(expand)
 	    	edge.insert(cell);
 
 			return this.createEdgeTemplateFromCells([edge], 100, 0, 'Connector with Symbol');
+		})),
+		this.addEntry(lineTags + 'edge shape symbol message mail email', mxUtils.bind(this, function()
+		{
+			var edge = new mxCell('', new mxGeometry(0, 0, 0, 0), 'endArrow=classic;html=1;');
+			edge.geometry.setTerminalPoint(new mxPoint(0, 0), true);
+			edge.geometry.setTerminalPoint(new mxPoint(100, 0), false);
+			edge.geometry.relative = true;
+			edge.edge = true;
+			
+	    	var cell = new mxCell('', new mxGeometry(0, 0, 20, 14), 'shape=message;html=1;outlineConnect=0;');
+	    	cell.geometry.relative = true;
+	    	cell.vertex = true;
+	    	cell.geometry.offset = new mxPoint(-10, -7);
+	    	edge.insert(cell);
+
+			return this.createEdgeTemplateFromCells([edge], 100, 0, 'Trial Symbol');
 		}))
 	];
 	
