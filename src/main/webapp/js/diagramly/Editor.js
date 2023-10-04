@@ -387,6 +387,11 @@
 	 * Common properties for all vertices.
 	 */
 	Editor.commonVertexProperties = [
+		{name: 'threatmodelerguid', dispName: 'ThreatModeler Component', defVal: 'none', type: 'enum',
+        	enumList: [{val: 'none', dispName: 'None'},
+        			{val: 'abcd-efgh-ijkl', dispName: 'Web Server'}, {val: 'ellipsePerimeter', dispName: 'Firewall'},
+        		]
+        },
         {name: 'colspan', dispName: 'Colspan', type: 'int', min: 1, defVal: 1, isVisible: function(state, format)
         {
         	var graph = format.editorUi.editor.graph;
