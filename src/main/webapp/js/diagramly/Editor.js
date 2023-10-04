@@ -387,11 +387,6 @@
 	 * Common properties for all vertices.
 	 */
 	Editor.commonVertexProperties = [
-		{name: 'threatmodelerguid', dispName: 'ThreatModelerComponent', defVal: 'none', type: 'enum',
-        	enumList: [{val: 'none', dispName: 'None'},
-        			{val: 'webserverguid', dispName: 'Web Server'}, {val: 'firewallguid', dispName: 'Firewall'},
-        		]
-        },
         {name: 'colspan', dispName: 'Colspan', type: 'int', min: 1, defVal: 1, isVisible: function(state, format)
         {
         	var graph = format.editorUi.editor.graph;
@@ -405,6 +400,11 @@
     		return state.vertices.length == 1 && state.edges.length == 0 && graph.isTableCell(state.vertices[0]);
         }},
         {type: 'separator'},
+		{name: 'threatmodelerguid', dispName: 'ThreatModeler Component', defVal: 'none', type: 'enum',
+        	enumList: [{val: 'none', dispName: 'None'},
+        			{val: 'webserverguid', dispName: 'Web Server'}, {val: 'firewallguid', dispName: 'Firewall'},
+        		]
+        },
         {name: 'resizeLastRow', dispName: 'Resize Last Row', type: 'bool', getDefaultValue: function(state, format)
         {
         	var cell = (state.vertices.length == 1 && state.edges.length == 0) ? state.vertices[0] : null;
