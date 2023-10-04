@@ -389,7 +389,7 @@
 	Editor.commonVertexProperties = [
 		{name: 'threatmodelerguid', dispName: 'ThreatModelerComponent', defVal: 'none', type: 'enum',
         	enumList: [{val: 'none', dispName: 'None'},
-        			{val: 'webserver', dispName: 'Web Server'}, {val: 'ellipsePerimeter', dispName: 'Firewall'},
+        			{val: 'webserverguid', dispName: 'Web Server'}, {val: 'firewallguid', dispName: 'Firewall'},
         		]
         },
         {name: 'colspan', dispName: 'Colspan', type: 'int', min: 1, defVal: 1, isVisible: function(state, format)
