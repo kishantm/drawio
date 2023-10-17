@@ -402,7 +402,7 @@
         {type: 'separator'},
 		{name: 'threatmodelerguid', dispName: 'ThreatModeler Component', defVal: 'none', type: 'enum',
         	enumList: [{val: 'none', dispName: 'None'},
-        			{val: 'webserverguid', dispName: 'Web Server'}, {val: 'firewallguid', dispName: 'Firewall'},
+        			{val: '9EFF862C-51B5-464B-9BA2-BE28892A023D', dispName: 'Web Server'}, {val: '4AE99C9C-8DBA-4164-BC9C-347D0B699E95', dispName: 'Firewall'},
         		]
         },
         {name: 'resizeLastRow', dispName: 'Resize Last Row', type: 'bool', getDefaultValue: function(state, format)
