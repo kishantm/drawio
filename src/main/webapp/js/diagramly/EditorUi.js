@@ -4109,6 +4109,7 @@
 	 */
     EditorUi.initTheme = function()
     {
+		mxClient.link('stylesheet', STYLE_PATH + '/tm.css');
     	if (Editor.currentTheme == 'atlas')
     	{
     		mxClient.link('stylesheet', STYLE_PATH + '/atlas.css');

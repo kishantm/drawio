@@ -1,0 +1,15 @@
+.geSidebarContainer:not(.geFormatContainer) {
+    display: none;
+}
+
+.geSidebarContainer.geFormatContainer {
+    top: 0 !important;
+}
+
+.geMenubarContainer {
+    display: none;
+}
+
+.geToolbarContainer:not(.geTabItem) {
+    display: none;
+}
