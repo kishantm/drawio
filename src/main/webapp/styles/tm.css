@@ -23,5 +23,5 @@
 }
 
 .geDiagramContainer.geDiagramBackdrop {
-    inset: 0px 240px 36px 0px;
+    inset: 0px 240px 36px 0px !important;
 }
