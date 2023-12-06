@@ -386,8 +386,6 @@
 	/**
 	 * Common properties for all vertices.
 	 */
-	let component = sessionStorage.getItem('Components');
-	let componentList = (component && JSON.parse(component)) || [];	
 	Editor.commonVertexProperties = [
         {name: 'colspan', dispName: 'Colspan', type: 'int', min: 1, defVal: 1, isVisible: function(state, format)
         {
@@ -406,7 +404,7 @@
         	// enumList: [{val: 'none', dispName: 'None'},
         	// 		{val: '9EFF862C-51B5-464B-9BA2-BE28892A023D', dispName: 'Web Server'}, {val: '4AE99C9C-8DBA-4164-BC9C-347D0B699E95', dispName: 'Firewall'},
         	// 	]
-			enumList: [{val: 'none', dispName: 'None'}, ...componentList.map(c => ({val: c.guid, dispName: c.Name}))]
+			enumList: [{val: 'none', dispName: 'None'}]
         },
         {name: 'resizeLastRow', dispName: 'Resize Last Row', type: 'bool', getDefaultValue: function(state, format)
         {

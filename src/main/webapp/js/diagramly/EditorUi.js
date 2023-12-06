@@ -16887,6 +16887,10 @@
 						this.handleRemoteInvokeResponse(data);
 						return;
 					}
+					else if (data.action == 'setComponents')
+					{
+						this.handleSetComponents(data);
+					}
 					else
 					{
 						// Unknown message must stop execution
@@ -18780,6 +18784,16 @@
 		}
 			
 		this.remoteInvokeCallbacks[msgMarkers.callbackId] = null; //set it to null only to keep the index
+	};
+
+	EditorUi.prototype.handleSetComponents = function (msg)
+	{
+		sessionStorage.setItem("Components", msg.components);
+		let componentList = (msg.components && JSON.parse(msg.components)) || [];
+		let threatModelerGuidProperty = Editor.prototype.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		if (threatModelerGuidProperty) {
+			threatModelerGuidProperty.enumList = [{ val: 'none', dispName: 'None' }, ...componentList.map(c => ({ val: c.guid, dispName: c.Name }))]
+		}
 	};
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
