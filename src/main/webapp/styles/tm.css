@@ -17,3 +17,11 @@
 .geTabContainer.geTabItem {
     left: 0 !important;
 }
+
+.geHsplit {
+    display: none;
+}
+
+.geDiagramContainer.geDiagramBackdrop {
+    inset: 0px 240px 36px 0px;
+}
