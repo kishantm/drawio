@@ -16890,6 +16890,7 @@
 					else if (data.action == 'setComponents')
 					{
 						this.handleSetComponents(data);
+						return;
 					}
 					else
 					{
