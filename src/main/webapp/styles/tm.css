@@ -13,3 +13,7 @@
 .geToolbarContainer:not(.geTabItem) {
     display: none;
 }
+
+.geTabContainer.geTabItem {
+    left: 0 !important;
+}
