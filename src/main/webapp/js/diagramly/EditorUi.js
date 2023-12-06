@@ -18791,7 +18791,7 @@
 	{
 		sessionStorage.setItem("Components", msg.components);
 		let componentList = (msg.components && JSON.parse(msg.components)) || [];
-		let threatModelerGuidProperty = Editor.prototype.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		let threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
 		if (threatModelerGuidProperty) {
 			threatModelerGuidProperty.enumList = [{ val: 'none', dispName: 'None' }, ...componentList.map(c => ({ val: c.guid, dispName: c.Name }))]
 		}
