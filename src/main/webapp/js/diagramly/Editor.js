@@ -5237,7 +5237,7 @@
 			{
 				var prop = properties[key];
 
-				if (key == 'threatmodelerguid') {
+				if (key != 'threatmodelerguid') {
 					continue;
 				};
 				
