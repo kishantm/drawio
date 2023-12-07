@@ -4721,7 +4721,7 @@
 			var that = this;
 			var graph = this.editorUi.editor.graph;
 			var secondLevel = [];
-			
+			div.style.display = 'block';
 			function insertAfter(newElem, curElem)
 			{
 				curElem.parentNode.insertBefore(newElem, curElem.nextSibling);
