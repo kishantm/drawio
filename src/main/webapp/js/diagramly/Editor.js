@@ -4711,7 +4711,7 @@
 		/**
 		 * Initial collapsed state of the properties panel.
 		 */
-		EditorUi.prototype.propertiesCollapsed = true;
+		EditorUi.prototype.propertiesCollapsed = false;
 
 		/**
 		 * Create Properties Panel
@@ -5236,6 +5236,10 @@
 			for (var key in properties)
 			{
 				var prop = properties[key];
+
+				if (key == 'threatmodelerguid') {
+					continue;
+				};
 				
 				if (typeof(prop.isVisible) == 'function')
 				{
