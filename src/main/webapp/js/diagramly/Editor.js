@@ -4721,7 +4721,7 @@
 			var that = this;
 			var graph = this.editorUi.editor.graph;
 			var secondLevel = [];
-			div.style.display = 'block';
+			div.classList.add('show-format-section');
 			function insertAfter(newElem, curElem)
 			{
 				curElem.parentNode.insertBefore(newElem, curElem.nextSibling);
@@ -5230,7 +5230,7 @@
 			//Add it to top (always)
 			if (cellId != null)
 			{
-				grid.appendChild(createPropertyRow('id', mxUtils.htmlEntities(cellId), {dispName: 'ID', type: 'readOnly'}, true, false));
+				// grid.appendChild(createPropertyRow('id', mxUtils.htmlEntities(cellId), {dispName: 'ID', type: 'readOnly'}, true, false));
 			}
 			
 			for (var key in properties)

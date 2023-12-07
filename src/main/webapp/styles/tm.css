@@ -25,3 +25,7 @@
 .geDiagramContainer.geDiagramBackdrop {
     inset: 0px 240px 36px 0px !important;
 }
+
+.geFormatSection:not(.show-format-section) {
+	display: none !important;
+}
