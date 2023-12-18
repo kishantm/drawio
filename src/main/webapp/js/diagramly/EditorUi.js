@@ -18792,9 +18792,23 @@
 	{
 		sessionStorage.setItem("Components", msg.components);
 		let componentList = (msg.components && JSON.parse(msg.components)) || [];
-		let threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
-		if (threatModelerGuidProperty) {
-			threatModelerGuidProperty.enumList = [{ val: 'none', dispName: 'None' }, ...componentList.map(c => ({ val: c.guid, dispName: c.Name }))]
+		let trustBoundaryList = (msg.trustBoundaries && JSON.parse(msg.trustBoundaries)) || [];
+		let protocols = (msg.protocols && JSON.parse(msg.protocols)) || [];
+		let threatModelerGuidVertexProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		if (threatModelerGuidVertexProperty) {
+			threatModelerGuidVertexProperty.enumList = [
+				{ val: 'none', dispName: 'None' },
+				...componentList.map(c => ({ val: c.guid, dispName: c.Name })),
+				...trustBoundaryList.map(c => ({ val: c.guid, dispName: c.name }))
+				]
+		}
+
+		let threatModelerGuidEdgeProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
+		if (threatModelerGuidEdgeProperty) {
+			threatModelerGuidEdgeProperty.enumList = [
+				{ val: 'none', dispName: 'None' },
+				...protocols.map(c => ({ val: c.Id, dispName: c.Name }))
+				]
 		}
 	};
 

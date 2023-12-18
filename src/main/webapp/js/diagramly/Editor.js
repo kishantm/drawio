@@ -350,6 +350,9 @@
 	 */
 	Editor.commonEdgeProperties = [
         {type: 'separator'},
+		{name: 'threatmodelerguid', dispName: 'ThreatModeler Protocol', defVal: 'none', type: 'enum',
+			enumList: [{val: 'none', dispName: 'None'}]
+        },
         {name: 'arcSize', dispName: 'Arc Size', type: 'float', min:0, defVal: mxConstants.LINE_ARCSIZE},
         {name: 'sourcePortConstraint', dispName: 'Source Constraint', type: 'enum', defVal: 'none',
         	enumList: [{val: 'none', dispName: 'None'}, {val: 'north', dispName: 'North'}, {val: 'east', dispName: 'East'}, {val: 'south', dispName: 'South'}, {val: 'west', dispName: 'West'}]
