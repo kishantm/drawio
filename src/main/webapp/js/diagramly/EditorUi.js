@@ -18823,16 +18823,16 @@
 		var vertices = sstate.vertices;
 		var edges = sstate.edges;
 		var newVal = msg.threatModelerGuid;
-		for (var i = 0; i < vertices.length; i++) {
-			StyleFormatPanel.prototype.findCommonProperties.call(this.editor, vertices[i], properties, i == 0);
-		}
+		var threatModelerGuidProperty = null;
 
-		for (var i = 0; i < edges.length; i++) {
-			StyleFormatPanel.prototype.findCommonProperties.call(this.editor, edges[i], properties, vertices.length == 0 && i == 0);
+		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
+			threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
+			threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
 		}
-
-		var threatModelerGuidProperty = properties['threatmodelerguid'];
-		this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
+		if (threatModelerGuidProperty) {
+			this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
+		}
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
