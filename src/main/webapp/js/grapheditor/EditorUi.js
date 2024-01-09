@@ -80,7 +80,7 @@ EditorUi = function(editor, container, lightbox)
 		}
 		parent.postMessage(JSON.stringify({
 			event: 'selectionChange',
-			message: { sstate, cells: undefined, isMultipleSelected, selectionType }
+			message: { selectionState: { ...sstate, cells: undefined }, isMultipleSelected, selectionType }
 		}), '*');
 	});
 	
