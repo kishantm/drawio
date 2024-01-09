@@ -4610,8 +4610,8 @@
 				}
 			};
 			
-			var view = this.editorUi.editor.graph.view;
-			var state = view.getState(cell);
+			var view = this?.editorUi?.editor?.graph?.view;
+			var state = view?.getState(cell);
 			
 			if (state != null && state.shape != null)
 			{
