@@ -75,18 +75,21 @@ EditorUi = function(editor, container, lightbox)
 		let selectionType = '';
 		let selectedCellId = null;
 		let selectedCellMXObjectId = null;
+		let selectedThreatModelerGuid = null;
 		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
 			selectionType = 'vertex';
 			selectedCellId = sstate.vertices[0].id;
 			selectedCellMXObjectId = sstate.vertices[0].mxObjectId;
+			selectedThreatModelerGuid = sstate.style.threatModelerGuid;
 		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
 			selectionType = 'edge';
 			selectedCellId = sstate.edges[0].id;
 			selectedCellMXObjectId = sstate.edges[0].mxObjectId;
+			selectedThreatModelerGuid = sstate.style.threatModelerGuid;
 		}
 		parent.postMessage(JSON.stringify({
 			event: 'selectionChange',
-			message: { selectionState: { ...sstate, cells: undefined, vertices: undefined, edges: undefined }, isMultipleSelected, selectionType, selectedCellId, selectedCellMXObjectId }
+			message: { selectionState: { ...sstate, cells: undefined, vertices: undefined, edges: undefined }, isMultipleSelected, selectionType, selectedCellId, selectedCellMXObjectId, selectedThreatModelerGuid }
 		}), '*');
 	});
 	
