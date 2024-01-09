@@ -69,7 +69,6 @@ EditorUi = function(editor, container, lightbox)
 	this.tmSelectionChangeListener = mxUtils.bind(this, function(sender, evt)
 	{		
 		var sstate = this.getSelectionState();
-		console.log(sstate);
 		var parent = window.opener || window.parent;
 		let isMultipleSelected = [...sstate.vertices, ...sstate.edges].length > 1;
 		let selectionType = '';
