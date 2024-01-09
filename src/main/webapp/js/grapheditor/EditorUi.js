@@ -71,9 +71,16 @@ EditorUi = function(editor, container, lightbox)
 		var sstate = this.getSelectionState();
 		console.log(sstate);
 		var parent = window.opener || window.parent;
+		let isMultipleSelected = [...sstate.vertices, ...sstate.edges].length > 1;
+		let selectionType = '';
+		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
+			selectionType = 'vertex';
+		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
+			selectionType = 'edge';
+		}
 		parent.postMessage(JSON.stringify({
 			event: 'selectionChange',
-			message: { sstate }
+			message: { sstate, cells: undefined, isMultipleSelected, selectionType }
 		}), '*');
 	});
 	
