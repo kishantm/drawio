@@ -80,12 +80,12 @@ EditorUi = function(editor, container, lightbox)
 			selectionType = 'vertex';
 			selectedCellId = sstate.vertices[0].id;
 			selectedCellMXObjectId = sstate.vertices[0].mxObjectId;
-			selectedThreatModelerGuid = sstate.style.threatModelerGuid;
+			selectedThreatModelerGuid = sstate.style.threatModelerguid;
 		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
 			selectionType = 'edge';
 			selectedCellId = sstate.edges[0].id;
 			selectedCellMXObjectId = sstate.edges[0].mxObjectId;
-			selectedThreatModelerGuid = sstate.style.threatModelerGuid;
+			selectedThreatModelerGuid = sstate.style.threatmodelerguid;
 		}
 		parent.postMessage(JSON.stringify({
 			event: 'selectionChange',
