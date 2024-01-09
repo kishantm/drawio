@@ -18824,11 +18824,11 @@
 		var edges = sstate.edges;
 		var newVal = msg.threatModelerGuid;
 		for (var i = 0; i < vertices.length; i++) {
-			this.editor.findCommonProperties(vertices[i], properties, i == 0);
+			StyleFormatPanel.prototype.findCommonProperties(vertices[i], properties, i == 0);
 		}
 
 		for (var i = 0; i < edges.length; i++) {
-			this.editor.findCommonProperties(edges[i], properties, vertices.length == 0 && i == 0);
+			StyleFormatPanel.prototype.findCommonProperties(edges[i], properties, vertices.length == 0 && i == 0);
 		}
 
 		var threatModelerGuidProperty = properties['threatmodelerguid'];
