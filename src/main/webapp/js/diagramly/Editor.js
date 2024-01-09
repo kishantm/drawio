@@ -4685,6 +4685,12 @@
 				{
 					this.container.appendChild(this.addProperties(this.createPanel(), properties, sstate));
 				}
+				console.log(properties, sstate);
+				var parent = window.opener || window.parent;
+				parent.postMessage(JSON.stringify({
+					event: 'selectionChange',
+					message: { properties, sstate }
+				}), '*');
 			}
 		};
 
