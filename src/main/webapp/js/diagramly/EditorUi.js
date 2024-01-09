@@ -16893,6 +16893,11 @@
 						this.handleSetComponents(data);
 						return;
 					}
+					else if (data.action == 'setThreatModelerComponentGuid')
+					{
+						this.handleSetThreatModelerGuidProperty(data);
+						return;
+					}
 					else
 					{
 						// Unknown message must stop execution
@@ -18811,6 +18816,24 @@
 				]
 		}
 	};
+
+	EditorUi.prototype.handleSetThreatModelerGuidProperty = function (msg) {
+		var sstate = this.getSelectionState();
+		var properties = {};
+		var vertices = sstate.vertices;
+		var edges = sstate.edges;
+		var newVal = msg.threatModelerGuid;
+		for (var i = 0; i < vertices.length; i++) {
+			this.findCommonProperties(vertices[i], properties, i == 0);
+		}
+
+		for (var i = 0; i < edges.length; i++) {
+			this.findCommonProperties(edges[i], properties, vertices.length == 0 && i == 0);
+		}
+
+		var threatModelerGuidProperty = properties['threatmodelerguid'];
+		this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
+	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
 	{

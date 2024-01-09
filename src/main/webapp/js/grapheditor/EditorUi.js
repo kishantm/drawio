@@ -65,12 +65,24 @@ EditorUi = function(editor, container, lightbox)
 	{
 		this.clearSelectionState();
 	});
+
+	this.tmSelectionChangeListener = mxUtils.bind(this, function(sender, evt)
+	{		
+		var sstate = this.getSelectionState();
+		console.log(sstate);
+		var parent = window.opener || window.parent;
+		parent.postMessage(JSON.stringify({
+			event: 'selectionChange',
+			message: { sstate }
+		}), '*');
+	});
 	
 	graph.getSelectionModel().addListener(mxEvent.CHANGE, this.selectionStateListener);
 	graph.getModel().addListener(mxEvent.CHANGE, this.selectionStateListener);
 	graph.addListener(mxEvent.EDITING_STARTED, this.selectionStateListener);
 	graph.addListener(mxEvent.EDITING_STOPPED, this.selectionStateListener);
 	graph.getView().addListener('unitChanged', this.selectionStateListener);
+	graph.getSelectionModel().addListener(mxEvent.CHANGE, this.tmSelectionChangeListener);
 
 	// Disables graph and forced panning in chromeless mode
 	if (this.editor.chromeless && !this.editor.editable)
@@ -6698,6 +6710,7 @@ EditorUi.prototype.destroy = function()
 		graph.removeListener(mxEvent.EDITING_STARTED, this.selectionStateListener);
 		graph.removeListener(mxEvent.EDITING_STOPPED, this.selectionStateListener);
 		graph.getView().removeListener('unitChanged', this.selectionStateListener);
+		graph.getSelectionModel().removeListener(mxEvent.CHANGE, this.tmSelectionChangeListener);
 		this.selectionStateListener = null;
 	}
 	
