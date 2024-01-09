@@ -73,10 +73,16 @@ EditorUi = function(editor, container, lightbox)
 		var parent = window.opener || window.parent;
 		let isMultipleSelected = [...sstate.vertices, ...sstate.edges].length > 1;
 		let selectionType = '';
+		let selectedCellId = null;
+		let selectedCellMXObjectId = null;
 		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
 			selectionType = 'vertex';
+			selectedCellId = sstate.vertices[0].id;
+			selectedCellMXObjectId = sstate.vertices[0].mxObjectId;
 		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
 			selectionType = 'edge';
+			selectedCellId = sstate.edges[0].id;
+			selectedCellMXObjectId = sstate.edges[0].mxObjectId;
 		}
 		parent.postMessage(JSON.stringify({
 			event: 'selectionChange',
