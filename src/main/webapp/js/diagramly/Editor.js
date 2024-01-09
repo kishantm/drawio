@@ -4825,7 +4825,7 @@
 				}
 			}
 
-			Editor.prototype.applyStyleVal = applyStyleVal;
+			Editor.prototype.applyStyleVal = applyStyleVal.bind(Editor.prototype);
 			
 			function setElementPos(td, elem, adjustHeight)
 			{
