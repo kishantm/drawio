@@ -16903,6 +16903,7 @@
 						if (saveButton) {
 							saveButton.dispatchEvent(new MouseEvent('click'));
 						}
+						return;
 					}
 					else
 					{
