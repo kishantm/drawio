@@ -16898,6 +16898,12 @@
 						this.handleSetThreatModelerGuidProperty(data);
 						return;
 					}
+					else if (data.action == 'saveDiagram') {
+						let saveButton = document.querySelector('.geBigButton[title="Save (Ctrl+S)"]');
+						if (saveButton) {
+							saveButton.dispatchEvent(new MouseEvent('click'));
+						}
+					}
 					else
 					{
 						// Unknown message must stop execution
