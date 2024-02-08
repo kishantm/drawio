@@ -16899,7 +16899,7 @@
 						return;
 					}
 					else if (data.action == 'saveDiagram') {
-						let saveButton = document.querySelector('.geBigButton[title="Save (Ctrl+S)"]');
+						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
 						if (saveButton) {
 							saveButton.dispatchEvent(new MouseEvent('click'));
 						}
