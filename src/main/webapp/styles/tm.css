@@ -1,0 +1,33 @@
+/* .geSidebarContainer:not(.geFormatContainer) */
+.geSidebarContainer {
+    display: none;
+}
+
+.geSidebarContainer.geFormatContainer {
+    top: 0 !important;
+}
+
+.geMenubarContainer {
+    display: none;
+}
+
+.geToolbarContainer:not(.geTabItem) {
+    display: none;
+}
+
+.geTabContainer.geTabItem {
+    left: 0 !important;	
+    right: 0 !important;
+}
+
+.geHsplit {
+    display: none;
+}
+
+.geDiagramContainer.geDiagramBackdrop {
+    inset: 0px 0px 36px 0px !important;
+}
+
+.geFormatSection:not(.show-format-section) {
+	display: none !important;
+}

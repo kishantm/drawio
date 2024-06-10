@@ -4354,6 +4354,7 @@
 	 */
     EditorUi.initTheme = function()
     {
+		mxClient.link('stylesheet', STYLE_PATH + '/tm.css');
     	if (Editor.currentTheme == 'atlas' && !window.DRAWIO_PUBLIC_BUILD)
     	{
     		mxClient.link('stylesheet', STYLE_PATH + '/atlas.css');
@@ -17139,6 +17140,23 @@
 						this.handleRemoteInvokeResponse(data);
 						return;
 					}
+					else if (data.action == 'setComponents')
+					{
+						this.handleSetComponents(data);
+						return;
+					}
+					else if (data.action == 'setThreatModelerComponentGuid')
+					{
+						this.handleSetThreatModelerGuidProperty(data);
+						return;
+					}
+					else if (data.action == 'saveDiagram') {
+						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
+						if (saveButton) {
+							saveButton.dispatchEvent(new MouseEvent('click'));
+						}
+						return;
+					}
 					else
 					{
 						// Unknown message must stop execution
@@ -19036,6 +19054,48 @@
 			
 		this.remoteInvokeCallbacks[msgMarkers.callbackId] = null; //set it to null only to keep the index
 	};
+
+	EditorUi.prototype.handleSetComponents = function (msg)
+	{
+		sessionStorage.setItem("Components", msg.components);
+		let componentList = (msg.components && JSON.parse(msg.components)) || [];
+		let trustBoundaryList = (msg.trustBoundaries && JSON.parse(msg.trustBoundaries)) || [];
+		let protocols = (msg.protocols && JSON.parse(msg.protocols)) || [];
+		let threatModelerGuidVertexProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		if (threatModelerGuidVertexProperty) {
+			threatModelerGuidVertexProperty.enumList = [
+				{ val: 'none', dispName: 'None' },
+				...componentList.map(c => ({ val: c.guid, dispName: c.Name })),
+				...trustBoundaryList.map(c => ({ val: c.guid, dispName: c.name }))
+				]
+		}
+
+		let threatModelerGuidEdgeProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
+		if (threatModelerGuidEdgeProperty) {
+			threatModelerGuidEdgeProperty.enumList = [
+				{ val: 'none', dispName: 'None' },
+				...protocols.map(c => ({ val: c.Id, dispName: c.Name }))
+				]
+		}
+	};
+
+	EditorUi.prototype.handleSetThreatModelerGuidProperty = function (msg) {
+		var sstate = this.getSelectionState();
+		var properties = {};
+		var vertices = sstate.vertices;
+		var edges = sstate.edges;
+		var newVal = msg.threatModelerGuid;
+		var threatModelerGuidProperty = null;
+
+		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
+			threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
+			threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
+		}
+		if (threatModelerGuidProperty) {
+			this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
+		}
+	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
 	{

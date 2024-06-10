@@ -450,6 +450,9 @@
 	 */
 	Editor.commonEdgeProperties = [
         {type: 'separator'},
+		{name: 'threatmodelerguid', dispName: 'ThreatModeler Protocol', defVal: 'none', type: 'enum',
+			enumList: [{val: 'none', dispName: 'None'}]
+        },
         {name: 'arcSize', dispName: 'Arc Size', type: 'float', min:0, defVal: mxConstants.LINE_ARCSIZE},
         {name: 'sourcePortConstraint', dispName: 'Source Constraint', type: 'enum', defVal: 'none',
         	enumList: [{val: 'none', dispName: 'None'}, {val: 'north', dispName: 'North'}, {val: 'east', dispName: 'East'}, {val: 'south', dispName: 'South'}, {val: 'west', dispName: 'West'}]
@@ -525,6 +528,12 @@
     		return state.vertices.length == 1 && state.edges.length == 0 && graph.isTableCell(state.vertices[0]);
         }},
         {type: 'separator'},
+		{name: 'threatmodelerguid', dispName: 'ThreatModeler Component', defVal: 'none', type: 'enum',
+        	// enumList: [{val: 'none', dispName: 'None'},
+        	// 		{val: '9EFF862C-51B5-464B-9BA2-BE28892A023D', dispName: 'Web Server'}, {val: '4AE99C9C-8DBA-4164-BC9C-347D0B699E95', dispName: 'Firewall'},
+        	// 	]
+			enumList: [{val: 'none', dispName: 'None'}]
+        },
         {name: 'resizeLastRow', dispName: 'Resize Last Row', type: 'bool', getDefaultValue: function(state, format)
         {
         	var cell = (state.vertices.length == 1 && state.edges.length == 0) ? state.vertices[0] : null;
@@ -4916,8 +4925,8 @@
 				}
 			};
 			
-			var view = this.editorUi.editor.graph.view;
-			var state = view.getState(cell);
+			var view = this?.editorUi?.editor?.graph?.view;
+			var state = view?.getState(cell);
 			
 			if (state != null && state.shape != null)
 			{
@@ -5020,7 +5029,7 @@
 		/**
 		 * Initial collapsed state of the properties panel.
 		 */
-		EditorUi.prototype.propertiesCollapsed = true;
+		EditorUi.prototype.propertiesCollapsed = false;
 
 		/**
 		 * Create Properties Panel
@@ -5030,7 +5039,7 @@
 			var that = this;
 			var graph = this.editorUi.editor.graph;
 			var secondLevel = [];
-			
+			div.classList.add('show-format-section');
 			function insertAfter(newElem, curElem)
 			{
 				curElem.parentNode.insertBefore(newElem, curElem.nextSibling);
@@ -5137,6 +5146,8 @@
 					}
 				}
 			}
+
+			Editor.prototype.applyStyleVal = applyStyleVal.bind(Editor.prototype);
 			
 			function setElementPos(td, elem, adjustHeight)
 			{
@@ -5596,13 +5607,17 @@
 			//Add it to top (always)
 			if (cellId != null && !hideId)
 			{
-				grid.appendChild(createPropertyRow('id', mxUtils.htmlEntities(cellId),
-					{dispName: 'id', type: 'readOnly'}, true, false));
+				// grid.appendChild(createPropertyRow('id', mxUtils.htmlEntities(cellId),
+				// 	{dispName: 'id', type: 'readOnly'}, true, false));
 			}
 			
 			for (var key in properties)
 			{
 				var prop = properties[key];
+
+				if (key != 'threatmodelerguid') {
+					continue;
+				};
 				
 				if (typeof(prop.isVisible) == 'function')
 				{

@@ -65,12 +65,39 @@ EditorUi = function(editor, container, lightbox)
 	{
 		this.clearSelectionState();
 	});
+
+	this.tmSelectionChangeListener = mxUtils.bind(this, function(sender, evt)
+	{		
+		var sstate = this.getSelectionState();
+		var parent = window.opener || window.parent;
+		let isMultipleSelected = [...sstate.vertices, ...sstate.edges].length > 1;
+		let selectionType = '';
+		let selectedCellId = null;
+		let selectedCellMXObjectId = null;
+		let selectedThreatModelerGuid = null;
+		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
+			selectionType = 'vertex';
+			selectedCellId = sstate.vertices[0].id;
+			selectedCellMXObjectId = sstate.vertices[0].mxObjectId;
+			selectedThreatModelerGuid = sstate.style.threatmodelerguid;
+		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
+			selectionType = 'edge';
+			selectedCellId = sstate.edges[0].id;
+			selectedCellMXObjectId = sstate.edges[0].mxObjectId;
+			selectedThreatModelerGuid = sstate.style.threatmodelerguid;
+		}
+		parent.postMessage(JSON.stringify({
+			event: 'selectionChange',
+			message: { selectionState: { ...sstate, cells: undefined, vertices: undefined, edges: undefined }, isMultipleSelected, selectionType, selectedCellId, selectedCellMXObjectId, selectedThreatModelerGuid }
+		}), '*');
+	});
 	
 	graph.getSelectionModel().addListener(mxEvent.CHANGE, this.selectionStateListener);
 	graph.getModel().addListener(mxEvent.CHANGE, this.selectionStateListener);
 	graph.addListener(mxEvent.EDITING_STARTED, this.selectionStateListener);
 	graph.addListener(mxEvent.EDITING_STOPPED, this.selectionStateListener);
 	graph.getView().addListener('unitChanged', this.selectionStateListener);
+	graph.getSelectionModel().addListener(mxEvent.CHANGE, this.tmSelectionChangeListener);
 
 	// Disables graph and forced panning in chromeless mode
 	if (this.editor.chromeless && !this.editor.editable)
@@ -6578,6 +6605,7 @@ EditorUi.prototype.destroy = function()
 		graph.getModel().removeListener(this.selectionStateListener);
 		graph.getView().removeListener(this.selectionStateListener);
 		graph.removeListener(this.selectionStateListener);
+		graph.getSelectionModel().removeListener(mxEvent.CHANGE, this.tmSelectionChangeListener);
 		this.selectionStateListener = null;
 	}
 	
