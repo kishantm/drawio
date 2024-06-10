@@ -1,8 +1,6 @@
 // Handles form-submit by preparing to process response
 function handleSubmit()
 {
-	var form = window.openForm || document.getElementById('openForm');
-	
 	if (window.parent.openNew && window.parent.baseUrl != null)
 	{
 		window.parent.openFile.setConsumer(null);
@@ -43,8 +41,9 @@ function main()
 		document.body.innerText = '';
 		var div = document.createElement('div');
 		div.style.fontFamily = 'Arial';
-		var darkMode = typeof window.parent.Editor.isDarkMode === 'function' &&
-			window.parent.Editor.isDarkMode();
+		var darkMode = window.parent.Editor.cssDarkMode ||
+			(typeof window.parent.Editor.isDarkMode === 'function' &&
+			window.parent.Editor.isDarkMode());
 
 		window.parent.listBrowserFiles(function(filesInfo)
 		{
@@ -165,7 +164,7 @@ function main()
 										{
 											if (window.parent != null)
 											{
-												window.parent.openWindow(window.parent.baseUrl + '#L' + encodeURIComponent(k), function()
+												window.parent.geOpenWindow(window.parent.baseUrl + '#L' + encodeURIComponent(k), function()
 												{
 													of.cancel(false);
 												}, function()
@@ -182,7 +181,10 @@ function main()
 									{
 										window.parent.openBrowserFile(k, function(data)
 										{
-											window.parent.openFile.setData(data, k);
+											if (window.parent != null)
+											{
+												window.parent.openFile.setData(data, k);
+											}
 										}, function()
 										{
 											//TODO add error
