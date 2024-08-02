@@ -75,12 +75,12 @@ EditorUi = function(editor, container, lightbox)
 		let selectedCellId = null;
 		let selectedCellMXObjectId = null;
 		let selectedThreatModelerGuid = null;
-		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
+		if (sstate.vertices.length >= 1 && sstate.edges.length == 0) {
 			selectionType = 'vertex';
 			selectedCellId = sstate.vertices[0].id;
 			selectedCellMXObjectId = sstate.vertices[0].mxObjectId;
 			selectedThreatModelerGuid = sstate.style.threatmodelerguid;
-		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
+		} else if (sstate.vertices.length == 0 && sstate.edges.length >= 1) {
 			selectionType = 'edge';
 			selectedCellId = sstate.edges[0].id;
 			selectedCellMXObjectId = sstate.edges[0].mxObjectId;

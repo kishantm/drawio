@@ -19087,9 +19087,9 @@
 		var newVal = msg.threatModelerGuid;
 		var threatModelerGuidProperty = null;
 
-		if (sstate.vertices.length == 1 && sstate.edges.length == 0) {
+		if (sstate.vertices.length >= 1 && sstate.edges.length == 0) {
 			threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
-		} else if (sstate.vertices.length == 0 && sstate.edges.length == 1) {
+		} else if (sstate.vertices.length == 0 && sstate.edges.length >= 1) {
 			threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
 		}
 		if (threatModelerGuidProperty) {
