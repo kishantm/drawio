@@ -782,7 +782,8 @@ var EmbedDialog = function(editorUi, result, timeout, ignoreSize, previewFn, tit
 						doc.writeln('<html><head><title>' +
 							mxUtils.htmlEntities(mxResources.get('preview')) +
 							'</title><meta charset="utf-8"></head><body>' +
-							mxUtils.htmlEntities(result) + '</body></html>');
+							(result.substring(0, 7) == '<iframe' ? result :
+								mxUtils.htmlEntities(result)) + '</body></html>');
 						doc.close();
 					}
 					else
@@ -3062,7 +3063,7 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 			var wh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 			
 			// TODO: Use maxscreensize
-			editorUi.sidebar.createTooltip(elt, cells, Math.min(ww - 80, 1000), Math.min(wh - 80, 800),
+			editorUi.sidebar.createTooltip(elt, cells, Math.min(ww - 120, 1000), Math.min(wh - 120, 800),
 				(title != null) ? mxResources.get(title) : null,
 				true, new mxPoint(x, y), true, function()
 				{
@@ -3362,6 +3363,7 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 					{
 						templateXml = modelXml;
 						lastAiXml = templateXml;
+						lastAiTitle = 'Smart Template: ' + title;
 					}
 				}));
 			}
@@ -3393,7 +3395,6 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 						{
 							templateXml = xml;
 							lastAiXml = xml;
-							lastAiTitle = 'Smart Template: ' + title;
 						}
 
 						var magnify = magnifyImage.cloneNode(true);
@@ -3529,7 +3530,7 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 				function doSave(mode, folderId, filename)
 				{
 					editorUi.createFile(filename, templateXml, (templateLibs != null &&
-						templateLibs.length > 0) ? templateLibs : mode, null, function()
+						templateLibs.length > 0) ? templateLibs : null, mode, function()
 					{
 						editorUi.hideDialog();
 					}, null, folderId, null, (templateClibs != null &&
@@ -3670,6 +3671,7 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 					generateElt.style.backgroundSize = 'contain';
 					generateInput.style.visibility = 'hidden';
 					generateButton.style.visibility = 'hidden';
+					helpGenerate.style.visibility = 'hidden';
 					editGenerate.style.visibility = 'hidden';
 					magnifyGenerate.style.visibility = (lastAiXml != null) ? 'visible' : 'hidden';
 					generateElt.getElementsByTagName('table')[0].style.visibility = 'visible';
@@ -3695,6 +3697,7 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 				{
 					generateInput.style.visibility = 'visible';
 					generateButton.style.visibility = 'visible';
+					helpGenerate.style.visibility = 'visible';
 					editGenerate.style.visibility = 'hidden';
 					magnifyGenerate.style.visibility = 'hidden';
 				}
@@ -3775,9 +3778,23 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 	editGenerate.style.right = '';
 	editGenerate.style.left = '2px';
 
+	var helpGenerate = magnifyImage.cloneNode(true);
+	helpGenerate.setAttribute('src', Editor.helpImage);
+	helpGenerate.setAttribute('title', mxResources.get('help'));
+	helpGenerate.style.opacity = '1';
+	helpGenerate.style.right = '-8px';
+	helpGenerate.style.top = '-8px';
+
+	mxEvent.addListener(helpGenerate, 'click', function(evt)
+	{
+		editorUi.openLink('https://www.drawio.com/blog/write-query-generate-diagram');
+		mxEvent.consume(evt);
+	});
+	
 	generateInput.style.visibility = 'hidden';
 	generateButton.style.visibility = 'hidden';
 	editGenerate.style.visibility = 'hidden';
+	helpGenerate.style.visibility = 'hidden';
 	magnifyGenerate.style.visibility = 'hidden';
 
 	function createGenerate()
@@ -3786,6 +3803,7 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 		generateElt.getElementsByTagName('table')[0].style.visibility = 'hidden';
 		generateInput.style.visibility = 'visible';
 		generateButton.style.visibility = 'visible';
+		helpGenerate.style.visibility = 'visible';
 		editGenerate.style.visibility = 'hidden';
 		magnifyGenerate.style.visibility = 'hidden';
 		generateInput.focus();
@@ -3816,75 +3834,105 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 
 	mxEvent.addListener(generateInput, 'input', updateGenerateButtonState);
 
-	function generateDiagram()
+	function stopInput()
 	{
-		var desc = generateInput.value;
-		var listenerTriggered = false;
-
-		var prompt = 'Write a detailed and complex MermaidJS declaration for ' +
-			'"' + (desc != '' ? desc : 'something random') + '" ' +
-			'using correct MermaidJS syntax and do not ' +
-			'provide additional text in your response.';
-		var title = generateInput.value;
-		
-		if (typeof mxMermaidToDrawio !== 'undefined')
-		{
-			mxMermaidToDrawio.addListener(mxUtils.bind(this, function(modelXml)
-			{
-				listenerTriggered = true;
-				templateXml = modelXml;
-			}));
-		}
-
 		generateInput.style.visibility = 'hidden';
 		generateButton.style.visibility = 'hidden';
-		generateElt.style.backgroundImage = 'url(' + Editor.spinImage + ')';
-		generateElt.style.backgroundSize = '12px 12px';
-
-		editorUi.generateOpenAiMermaidDiagram(prompt,
-			function(mermaidData, imageData, w, h)
-			{
-				if (selectedElt == generateElt && generateInput.style.visibility == 'hidden')
-				{
-					generateBackground = 'url(' + 'data:image/svg+xml;base64,' +
-						imageData.substring(imageData.indexOf(',') + 1) + ')';
-					generateElt.style.backgroundImage = generateBackground;
-					generateElt.style.backgroundSize = 'contain';
-					editGenerate.style.visibility = 'visible';
-					magnifyGenerate.style.visibility = 'visible';
-					generateElt.setAttribute('title', title);
-
-					// Updates template XML for insert button
-					var xml = (listenerTriggered) ? templateXml :
-						editorUi.createMermaidXml(mermaidData,
-							EditorUi.defaultMermaidConfig,
-							imageData, w, h, title);
-					templateXml = xml;
-					lastAiXml = xml;
-					lastAiTitle = title;
-				}
-			}, function(e)
-			{
-				if (selectedElt == generateElt)
-				{
-					generateInput.style.visibility = 'visible';
-					generateButton.style.visibility = 'visible';
-					editGenerate.style.visibility = 'visible';
-					magnifyGenerate.style.visibility = 'visible';
-					editorUi.handleError(e);
-				}
-			}
-		);
+		helpGenerate.style.visibility = 'hidden';
+		generateElt.style.backgroundImage = generateBackground;
+		generateElt.style.backgroundSize = 'contain';
+		editGenerate.style.visibility = 'visible';
+		magnifyGenerate.style.visibility = 'visible';
 	};
 
-	mxEvent.addListener(generateButton, 'click', generateDiagram);
+	function generateDiagram(cancel)
+	{
+		var desc = mxUtils.trim(generateInput.value);
+
+		if (!cancel && desc != '')
+		{
+			generateInput.style.visibility = 'hidden';
+			generateButton.style.visibility = 'hidden';
+			helpGenerate.style.visibility = 'hidden';
+			var listenerTriggered = false;
+
+			var prompt = 'Write a detailed and complex MermaidJS declaration for ' +
+				'"' + (desc != '' ? desc : 'something random') + '" ' +
+				'using correct MermaidJS syntax and do not ' +
+				'provide additional text in your response.';
+			
+			if (typeof mxMermaidToDrawio !== 'undefined')
+			{
+				mxMermaidToDrawio.addListener(mxUtils.bind(this, function(modelXml)
+				{
+					if (modelXml != editorUi.emptyDiagramXml)
+					{
+						listenerTriggered = true;
+						templateXml = modelXml;
+					}
+				}));
+			}
+
+			generateElt.style.backgroundImage = 'url(' + Editor.spinImage + ')';
+			generateElt.style.backgroundSize = '12px 12px';
+			
+			editorUi.generateOpenAiMermaidDiagram(prompt,
+				function(mermaidData, imageData, w, h)
+				{
+					if (selectedElt == generateElt && generateInput.style.visibility == 'hidden')
+					{
+						generateBackground = 'url(' + 'data:image/svg+xml;base64,' +
+							imageData.substring(imageData.indexOf(',') + 1) + ')';
+						generateElt.setAttribute('title', desc);
+
+						// Updates template XML for insert button
+						var xml = (listenerTriggered) ? templateXml :
+							editorUi.createMermaidXml(mermaidData,
+								EditorUi.defaultMermaidConfig,
+								imageData, w, h, desc);
+						templateXml = xml;
+						lastAiXml = xml;
+						lastAiTitle = desc;
+
+						stopInput();
+					}
+				}, function(e)
+				{
+					if (selectedElt == generateElt)
+					{
+						generateInput.style.visibility = 'visible';
+						generateButton.style.visibility = 'visible';
+						helpGenerate.style.visibility = 'visible';
+						editGenerate.style.visibility = 'visible';
+						magnifyGenerate.style.visibility = 'visible';
+						editorUi.handleError(e);
+					}
+				}
+			);
+		}
+		else if (lastAiTitle != null)
+		{
+			generateInput.value = lastAiTitle;
+			stopInput();
+		}
+	};
+
+	mxEvent.addListener(generateButton, 'click', function()
+	{
+		generateDiagram();
+	});	
 
 	mxEvent.addListener(generateInput, 'keydown', function(evt)
 	{
 		if (evt.keyCode == 13 && !mxEvent.isShiftDown(evt))
 		{
 			generateDiagram();
-			evt.preventDefault();
+			mxEvent.consume(evt);
+		}
+		else if (evt.keyCode == 27)
+		{
+			generateDiagram(true);
+			mxEvent.consume(evt);
 		}
 	});
 
@@ -4124,10 +4172,12 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 			if (templateType == 'generative' && generateElt == null)
 			{
 				elt.style.backgroundImage = generateBackground;
+				elt.style.overflow = 'visible';
 				elt.appendChild(magnifyGenerate);
 				elt.appendChild(editGenerate);
 				elt.appendChild(generateInput);
 				elt.appendChild(generateButton);
+				elt.appendChild(helpGenerate);
 				generateElt = elt;
 			}
 
@@ -4208,7 +4258,8 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 	categories['basic'] = [{title: 'blankDiagram'}];
 	var templates = categories['basic'];
 
-	if (editorUi.isExternalDataComms() &&
+	if (Editor.enableChatGpt &&
+		editorUi.isExternalDataComms() &&
 		editorUi.getServiceName() == 'draw.io' &&
 		typeof mxMermaidToDrawio !== 'undefined' &&
 		window.isMermaidEnabled)
@@ -4216,7 +4267,8 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 		categories['basic'].push({title: 'generate', type: 'generative'});
 	}
 	
-	if (editorUi.isExternalDataComms() &&
+	if (Editor.enableChatGpt &&
+		editorUi.isExternalDataComms() &&
 		editorUi.getServiceName() == 'draw.io' &&
 		typeof mxMermaidToDrawio !== 'undefined' &&
 		window.isMermaidEnabled)
@@ -4768,17 +4820,6 @@ var NewDialog = function(editorUi, compact, showName, callback, createOnly, canc
 	btns.style.bottom = '24px';
 	btns.style.right = '40px';
 	
-	if (!compact && !editorUi.isOffline() && showName && callback == null && !createOnly)
-	{
-		var helpBtn = mxUtils.button(mxResources.get('help'), function()
-		{
-			editorUi.openLink('https://support.draw.io/display/DO/Creating+and+Opening+Files');
-		});
-		
-		helpBtn.className = 'geBtn';	
-		btns.appendChild(helpBtn);
-	}
-
 	var cancelBtn = mxUtils.button(mxResources.get('cancel'), function()
 	{
 		if (cancelCallback != null)
@@ -6675,19 +6716,26 @@ var LinkDialog = function(editorUi, initialValue, btnLabel, fn, showPages, showN
 					
 			mxEvent.addListener(dlg, 'drop', mxUtils.bind(this, function(evt)
 			{
-			    if (dropElt != null)
-			    {
-			    	dropElt.parentNode.removeChild(dropElt);
-			    	dropElt = null;
-			    }
+				try
+				{
+					if (dropElt != null)
+					{
+						dropElt.parentNode.removeChild(dropElt);
+						dropElt = null;
+					}
 
-			    if (mxUtils.indexOf(evt.dataTransfer.types, 'text/uri-list') >= 0)
-			    {
-			    	linkInput.value = decodeURIComponent(evt.dataTransfer.getData('text/uri-list'));
-			    	urlRadio.setAttribute('checked', 'checked');
-			    	urlRadio.checked = true;
-			    	mainBtn.click();
-			    }
+					if (mxUtils.indexOf(evt.dataTransfer.types, 'text/uri-list') >= 0)
+					{
+						linkInput.value = decodeURIComponent(evt.dataTransfer.getData('text/uri-list'));
+						urlRadio.setAttribute('checked', 'checked');
+						urlRadio.checked = true;
+						mainBtn.click();
+					}
+				}
+				catch (e)
+				{
+					editorUi.handleError(e);
+				}
 
 			    evt.stopPropagation();
 			    evt.preventDefault();
@@ -7097,7 +7145,7 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 	var div = document.createElement('div');
 	
 	var title = document.createElement('h3');
-	title.style.marginTop = '0px';
+	title.style.marginTop = '3px';
 	mxUtils.write(title, mxResources.get('revisionHistory'));
 	div.appendChild(title);
 	
@@ -7118,7 +7166,17 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 
 	// Contains possible error messages
 	var errorNode = document.createElement('div');
-	errorNode.style.cssText = 'position:absolute;left:0;right:0;top:0;bottom:20px;text-align:center;transform:translate(0,50%);pointer-events:none;';
+	errorNode.style.position = 'absolute',
+	errorNode.style.display = 'none';
+	errorNode.style.textAlign = 'center';
+	errorNode.style.padding = '8px';
+	errorNode.style.borderRadius = '8px';
+	errorNode.style.left = '50%';
+	errorNode.style.top = '50%';
+	errorNode.style.whiteSpace = 'nowrap';
+	errorNode.style.transform = 'translate(-50%, -50%)';
+	errorNode.style.background = 'inherit';
+	errorNode.style.border = '1px solid';
 	container.appendChild(errorNode);
 	
 	mxEvent.disableContextMenu(container);
@@ -7165,20 +7223,6 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 		return null;
 	};
 
-	if (Editor.MathJaxRender)
-	{
-		graph.model.addListener(mxEvent.CHANGE, mxUtils.bind(this, function(sender, evt)
-		{
-			// LATER: Math support is used if current graph has math enabled
-			// should use switch from history instead but requires setting the
-			// global mxClient.NO_FO switch
-			if (editorUi.editor.graph.mathEnabled)
-			{
-				Editor.MathJaxRender(graph.container);
-			}
-		}));
-	}
-	
 	var opts = {
 	  lines: 11, // The number of lines to draw
 	  length: 15, // The length of each line
@@ -7313,6 +7357,7 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 
 			if (curr == null)
 			{
+				errorNode.style.display = 'inline-block';
 				mxUtils.write(errorNode, mxResources.get('pageNotFound'));
 			}
 			else
@@ -7328,16 +7373,24 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 				codec.decode(tempNode, cmpGraph.getModel());
 				cmpGraph.view.scaleAndTranslate(graph.view.scale,
 					graph.view.translate.x, graph.view.translate.y);
+				cmpGraph.mathEnabled = tempNode.getAttribute('math') == '1';
+				
+				if (Editor.MathJaxRender && cmpGraph.mathEnabled)
+				{
+					Editor.MathJaxRender(cmpGraph.container);
+				}
 			}
 		}
 		catch (e)
 		{
+			errorNode.style.display = 'inline-block';
 			errorNode.innerText = '';
 			mxUtils.write(errorNode, mxResources.get('pageNotFound') + ': ' + e.message);
 		}
 	}, null, function()
 	{
 		mxUtils.setOpacity(compareBtn, 60);
+		errorNode.style.display = 'none';
 		errorNode.innerText = '';
 
 		if (container.style.display == 'none')
@@ -7603,9 +7656,15 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 								graph.maxFitScale = 1;
 								graph.fit(8);
 								graph.center();
-								
+								graph.mathEnabled = dataNode.getAttribute('math') == '1';
+
+								if (Editor.MathJaxRender && graph.mathEnabled)
+								{
+									Editor.MathJaxRender(graph.container);
+								}
+
 								return dataNode;
-							}
+							};
 							
 							function parseDiagram(diagramNode)
 							{
@@ -7615,17 +7674,18 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 								}
 								
 								return diagramNode;
-							}
+							};
 
 							if (node.nodeName == 'mxfile')
 							{
 								// Workaround for "invalid calling object" error in IE
 								var tmp = node.getElementsByTagName('diagram');
+								var newPages = {};
 								diagrams = [];
 								
 								for (var i = 0; i < tmp.length; i++)
 								{
-									diagrams.push(tmp[i]);	
+									diagrams.push(tmp[i]);
 								}
 								
 								realPage = Math.min(currentPage, diagrams.length - 1);
@@ -7643,18 +7703,35 @@ var RevisionDialog = function(editorUi, revs, restoreFn)
 									for (var i = 0; i < diagrams.length; i++)
 									{
 										var pageOption = document.createElement('option');
-										var name = diagrams[i].getAttribute('name') ||
-											mxResources.get('pageWithNumber', [i + 1]);
-										mxUtils.write(pageOption, name);
 										pageOption.setAttribute('title', name + ' (' +
 											diagrams[i].getAttribute('id') + ')');
 										pageOption.setAttribute('value', i);
+										var name = diagrams[i].getAttribute('name') ||
+											mxResources.get('pageWithNumber', [i + 1]);
+										var localPage = editorUi.getPageById(diagrams[i].getAttribute('id'));
+										var state = '';
+										
+										if (localPage != null)
+										{
+											var newPage = new DiagramPage(diagrams[i]);
+
+											if (editorUi.getHashValueForPages([localPage]) != editorUi.getHashValueForPages([newPage]))
+											{
+												state = ' (M)';
+											}
+										}
+										else
+										{
+											state = ' (X)';
+										}
+
+										mxUtils.write(pageOption, name + state);
 										
 										if (i == realPage)
 										{
 											pageOption.setAttribute('selected', 'selected');
 										}
-	
+										
 										pageSelect.appendChild(pageOption);
 									}
 								}
@@ -12112,40 +12189,35 @@ var LibraryDialog = function(editorUi, name, library, initialImages, file, mode,
 	{
 		var btn = mxUtils.button(mxResources.get('link'), function()
 		{
-			if (editorUi.spinner.spin(document.body, mxResources.get('loading')))
+			editorUi.getPublicUrl(file, function(url)
 			{
-		    	file.getPublicUrl(function(url)
+				if (url != null)
 				{
-					editorUi.spinner.stop();
-					
-					if (url != null)
-					{
-						var search = editorUi.getSearch(['create', 'title', 'mode', 'url', 'drive', 'splash', 'state', 'clibs', 'ui']);
-						search += ((search.length == 0) ? '?' : '&') + 'splash=0&clibs=U' + encodeURIComponent(url);
-						var dlg = new EmbedDialog(editorUi, window.location.protocol + '//' +
-							window.location.host + '/' + search, null, null, null, null,
-							'Check out the library I made using @drawio');
-						editorUi.showDialog(dlg.container, 450, 240, true);
-						dlg.init();
-					}
-					else if (file.constructor == DriveLibrary)
-					{
-					    editorUi.showError(mxResources.get('error'), mxResources.get('diagramIsNotPublic'),
-							mxResources.get('share'), mxUtils.bind(this, function()
-							{
-								editorUi.drive.showPermissions(file.getId(), file);
-							}), null, mxResources.get('ok'), mxUtils.bind(this, function()
-							{
-								// Hides dialog
-							})
-						);
-					}
-					else
-					{
-						editorUi.handleError({message: mxResources.get('diagramIsNotPublic')});
-					}
-				});
-			}
+					var search = editorUi.getSearch(['create', 'title', 'mode', 'url', 'drive', 'splash', 'state', 'clibs', 'ui']);
+					search += ((search.length == 0) ? '?' : '&') + 'splash=0&clibs=U' + encodeURIComponent(url);
+					var dlg = new EmbedDialog(editorUi, window.location.protocol + '//' +
+						window.location.host + '/' + search, null, null, null, null,
+						'Check out the library I made using @drawio');
+					editorUi.showDialog(dlg.container, 450, 240, true);
+					dlg.init();
+				}
+				else if (file.constructor == DriveLibrary)
+				{
+					editorUi.showError(mxResources.get('error'), mxResources.get('diagramIsNotPublic'),
+						mxResources.get('share'), mxUtils.bind(this, function()
+						{
+							editorUi.drive.showPermissions(file.getId(), file);
+						}), null, mxResources.get('ok'), mxUtils.bind(this, function()
+						{
+							// Hides dialog
+						})
+					);
+				}
+				else
+				{
+					editorUi.handleError({message: mxResources.get('diagramIsNotPublic')});
+				}
+			});
 		});
 
 		btn.className = 'geBtn';
@@ -12509,14 +12581,8 @@ var CustomDialog = function(editorUi, content, okFn, cancelFn, okButtonText, hel
 	}
 	
 	if (!editorUi.isOffline() && helpLink != null)
-	{
-		var helpBtn = mxUtils.button(mxResources.get('help'), function()
-		{
-			editorUi.openLink(helpLink);
-		});
-		
-		helpBtn.className = 'geBtn';
-		btns.appendChild(helpBtn);
+	{	
+		btns.appendChild(editorUi.createHelpIcon(helpLink));
 	}
 	
 	var cancelBtn = mxUtils.button(cancelButtonText || mxResources.get('cancel'), function()
@@ -12932,13 +12998,7 @@ var FontDialog = function(editorUi, curFontname, curUrl, curType, fn)
 	
 	if (!editorUi.isOffline())
 	{
-		var helpBtn = mxUtils.button(mxResources.get('help'), function()
-		{
-			editorUi.openLink('https://www.drawio.com/blog/external-fonts');
-		});
-		
-		helpBtn.className = 'geBtn';	
-		td.appendChild(helpBtn);
+		td.appendChild(editorUi.createHelpIcon('https://www.drawio.com/blog/external-fonts'));
 	}
 	
 	var cancelBtn = mxUtils.button(mxResources.get('cancel'), function()

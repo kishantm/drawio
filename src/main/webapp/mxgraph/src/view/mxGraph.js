@@ -1911,7 +1911,8 @@ mxGraph.prototype.getSelectionCellsForChanges = function(changes, ignoreFn)
 	var addCell = mxUtils.bind(this, function(cell)
 	{
 		if (cell != null && !dict.get(cell) &&
-			this.model.contains(cell))
+			this.model.contains(cell) &&
+			!this.model.isLayer(cell))
 		{
 			if (this.model.isEdge(cell) || this.model.isVertex(cell))
 			{
@@ -5453,7 +5454,9 @@ mxGraph.prototype.updateAlternateBounds = function(cell, geo, willCollapse)
 			
 			if (this.collapseToPreferredSize)
 			{
-				var tmp = this.getPreferredSizeForCell(cell);
+				var gridEnabled = mxUtils.getValue(style, mxConstants.STYLE_AUTOSIZE_GRID,
+					(this.gridEnabled) ? '1' : '0') == '1';
+				var tmp = this.getPreferredSizeForCell(cell, null, gridEnabled);
 				
 				if (tmp != null)
 				{
@@ -5608,7 +5611,9 @@ mxGraph.prototype.cellSizeUpdated = function(cell, ignoreChildren)
 						parseFloat(mxUtils.getValue(style, mxConstants.STYLE_SPACING_RIGHT, 0));
 				}
 
-				var size = this.getPreferredSizeForCell(cell, w);
+				var gridEnabled = mxUtils.getValue(style, mxConstants.STYLE_AUTOSIZE_GRID,
+					(this.gridEnabled) ? '1' : '0') == '1';
+				var size = this.getPreferredSizeForCell(cell, w, gridEnabled);
 				
 				if (size != null)
 				{
@@ -5753,8 +5758,9 @@ mxGraph.prototype.cellSizeUpdated = function(cell, ignoreChildren)
  * cell - <mxCell> for which the preferred size should be returned.
  * textWidth - Optional maximum text width for word wrapping.
  */
-mxGraph.prototype.getPreferredSizeForCell = function(cell, textWidth)
+mxGraph.prototype.getPreferredSizeForCell = function(cell, textWidth, gridEnabled)
 {
+	gridEnabled = (gridEnabled != null) ? gridEnabled : this.gridEnabled;
 	var result = null;
 	
 	if (cell != null)
@@ -5836,7 +5842,7 @@ mxGraph.prototype.getPreferredSizeForCell = function(cell, textWidth)
 					width = tmp;
 				}
 			
-				if (this.gridEnabled)
+				if (gridEnabled)
 				{
 					width = this.snap(width + this.gridSize / 2);
 					height = this.snap(height + this.gridSize / 2);
