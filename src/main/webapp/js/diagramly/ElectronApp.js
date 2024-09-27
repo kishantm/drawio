@@ -970,8 +970,8 @@ mxStencilRegistry.allowEval = false;
 							'inConflictState', file.inConflictState,
 							'unwatchedSaves', file.unwatchedSaves);
 						
-						//File is changed (not just accessed) && File is not already in a conflict state
-						if (curr.mtimeMs != prev.mtimeMs && !file.inConflictState)
+						// File not deleted, changed (not just accessed) and not already in conflict state
+						if (curr.mtimeMs != 0 && curr.mtimeMs != prev.mtimeMs && !file.inConflictState)
 						{
 							//Ignore our own changes
 							if (file.unwatchedSaves || (file.stat != null && file.stat.mtimeMs == curr.mtimeMs))
@@ -1811,28 +1811,43 @@ mxStencilRegistry.allowEval = false;
 	App.prototype.checkForUpdates = function()
 	{
 		electron.sendMessage('checkForUpdates');
-	}
+	};
 	
 	App.prototype.toggleSpellCheck = function()
 	{
 		electron.sendMessage('toggleSpellCheck');
-	}
+	};
 
 	App.prototype.toggleStoreBkp = function()
 	{
 		electron.sendMessage('toggleStoreBkp');
-	}
+	};
 	
 	App.prototype.toggleGoogleFonts = function()
 	{
 		electron.sendMessage('toggleGoogleFonts');
-	}
+	};
 
 	App.prototype.openDevTools = function()
 	{
 		electron.sendMessage('openDevTools');
-	}
-	
+	};
+		
+	App.prototype.desktopZoomIn = function()
+	{
+		electron.sendMessage('zoomIn');
+	};
+
+	App.prototype.desktopZoomOut = function()
+	{
+		electron.sendMessage('zoomOut');
+	};
+
+	App.prototype.desktopResetZoom = function()
+	{
+		electron.sendMessage('resetZoom');
+	};
+
 	/**
 	 * Copies the given cells and XML to the clipboard as an embedded image.
 	 */
