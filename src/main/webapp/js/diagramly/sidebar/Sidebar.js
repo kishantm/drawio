@@ -1185,7 +1185,7 @@
 									
 									var url = lib.url;
 									
-									if (!this.editorUi.editor.isCorsEnabledForUrl(url, true))
+									if (!this.editorUi.editor.isCorsEnabledForUrl(url))
 									{
 										url = PROXY_URL + '?url=' + encodeURIComponent(url);
 									}
@@ -1240,7 +1240,7 @@
 									preloadCount++;					
 									var url = lib.url;
 									
-									if (!this.editorUi.editor.isCorsEnabledForUrl(url, true))
+									if (!this.editorUi.editor.isCorsEnabledForUrl(url))
 									{
 										url = PROXY_URL + '?url=' + encodeURIComponent(url);
 									}

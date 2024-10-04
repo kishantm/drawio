@@ -3045,9 +3045,9 @@
 	 * Returns true if the given URL is known to have CORS headers and is
 	 * allowed by CSP.
 	 */
-	Editor.prototype.isCorsEnabledForUrl = function(url, byPassForLocalDevelopment = false)
+	Editor.prototype.isCorsEnabledForUrl = function(url)
 	{
-		if (byPassForLocalDevelopment && window.location.origin.includes('localhost') && url?.includes('localhost')) {
+		if (window.location.origin.includes('localhost') && url?.includes('localhost')) {
 			return true;
 		}
 
