@@ -3047,7 +3047,6 @@
 	 */
 	Editor.prototype.isCorsEnabledForUrl = function(url, byPassForLocalDevelopment = false)
 	{
-		console.log({ byPassForLocalDevelopment, origin: window.location.origin, url });
 		if (byPassForLocalDevelopment && window.location.origin.includes('localhost') && url?.includes('localhost')) {
 			return true;
 		}
