@@ -1,5 +1,5 @@
 /* .geSidebarContainer:not(.geFormatContainer) */
-.geSidebarContainer {
+/* .geSidebarContainer {
     display: none;
 }
 
@@ -30,4 +30,4 @@
 
 .geFormatSection:not(.show-format-section) {
 	display: none !important;
-}
+} */
