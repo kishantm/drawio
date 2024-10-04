@@ -3045,8 +3045,12 @@
 	 * Returns true if the given URL is known to have CORS headers and is
 	 * allowed by CSP.
 	 */
-	Editor.prototype.isCorsEnabledForUrl = function(url)
+	Editor.prototype.isCorsEnabledForUrl = function(url, byPassForLocalDevelopment = false)
 	{
+		if (byPassForLocalDevelopment && window.location.origin.includes('localhost') && url?.includes('localhost')) {
+			return true;
+		}
+
 		// Disables proxy for desktop and chrome app as it is served locally
 		if (mxClient.IS_CHROMEAPP || EditorUi.isElectronApp)
 		{

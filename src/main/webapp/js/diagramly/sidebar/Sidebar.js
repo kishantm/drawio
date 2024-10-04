@@ -1185,7 +1185,7 @@
 									
 									var url = lib.url;
 									
-									if (!this.editorUi.editor.isCorsEnabledForUrl(url))
+									if (!this.editorUi.editor.isCorsEnabledForUrl(url, true))
 									{
 										url = PROXY_URL + '?url=' + encodeURIComponent(url);
 									}
