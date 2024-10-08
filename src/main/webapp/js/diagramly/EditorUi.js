@@ -19228,7 +19228,7 @@
 		let unmappedCells = [];
 		for (let cellId in model.cells) {
 			let cell = model.cells[cellId];
-			let style = graph.getCellStyle(cell);				
+			let style = this.graph.getCellStyle(cell);
 			return !mxUtils.getValue(style, 'threatmodelerguid', '');
 		}
 		this.graph.highlightCells(unmappedCells, "#ffafaf", 1000 * 60 * 60, 1, 0.5);
