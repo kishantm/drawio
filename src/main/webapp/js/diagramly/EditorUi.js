@@ -17265,6 +17265,16 @@
 						this.handleSetThreatModelerGuidProperty(data);
 						return;
 					}
+					else if (data.action == 'highlightUnmappedVerticesAndEdges')
+						{
+							this.highlightUnmappedVerticesAndEdges(data);
+							return;
+						}
+					else if (data.action == 'resetHighlightUnmappedVerticesAndEdges')
+						{
+							this.resetHighlightUnmappedVerticesAndEdges(data);
+							return;
+						}
 					else if (data.action == 'saveDiagram') {
 						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
 						if (saveButton) {
@@ -19210,6 +19220,40 @@
 		if (threatModelerGuidProperty) {
 			this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
 		}
+	}
+
+	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function () {
+		var model = this.editor.graph.getModel();
+		console.log('highlightUnmappedVerticesAndEdges', model);
+		// var properties = {};
+		// var vertices = model.vertices;
+		// var edges = model.edges;
+
+		// if (sstate.vertices.length >= 1 && sstate.edges.length == 0) {
+		// 	threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		// } else if (sstate.vertices.length == 0 && sstate.edges.length >= 1) {
+		// 	threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
+		// }
+		// if (threatModelerGuidProperty) {
+		// 	this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
+		// }
+	}
+
+	EditorUi.prototype.resetHighlightUnmappedVerticesAndEdges = function () {
+		var model = this.editor.graph.getModel();
+		console.log('resetHighlightUnmappedVerticesAndEdges', model);
+		// var properties = {};
+		// var vertices = model.vertices;
+		// var edges = model.edges;
+
+		// if (model.vertices.length >= 1 && model.edges.length == 0) {
+		// 	threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
+		// } else if (sstate.vertices.length == 0 && sstate.edges.length >= 1) {
+		// 	threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
+		// }
+		// if (threatModelerGuidProperty) {
+		// 	this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
+		// }
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
