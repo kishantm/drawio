@@ -19223,37 +19223,21 @@
 	}
 
 	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function () {
-		var model = this.editor.graph.getModel();
+		let model = this.editor.graph.getModel();
 		console.log('highlightUnmappedVerticesAndEdges', model);
-		// var properties = {};
-		// var vertices = model.vertices;
-		// var edges = model.edges;
-
-		// if (sstate.vertices.length >= 1 && sstate.edges.length == 0) {
-		// 	threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
-		// } else if (sstate.vertices.length == 0 && sstate.edges.length >= 1) {
-		// 	threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
-		// }
-		// if (threatModelerGuidProperty) {
-		// 	this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
-		// }
+		let unmappedCells = [];
+		for (let cellId in model.cells) {
+			let cell = model.cells[cellId];
+			let style = graph.getCellStyle(cell);				
+			return !mxUtils.getValue(style, 'threatmodelerguid', '');
+		}
+		this.graph.highlightCells(unmappedCells, "#ffafaf", 1000 * 60 * 60, 1, 0.5);
 	}
 
 	EditorUi.prototype.resetHighlightUnmappedVerticesAndEdges = function () {
 		var model = this.editor.graph.getModel();
 		console.log('resetHighlightUnmappedVerticesAndEdges', model);
-		// var properties = {};
-		// var vertices = model.vertices;
-		// var edges = model.edges;
-
-		// if (model.vertices.length >= 1 && model.edges.length == 0) {
-		// 	threatModelerGuidProperty = Editor.commonVertexProperties?.find(p => p.name === 'threatmodelerguid');
-		// } else if (sstate.vertices.length == 0 && sstate.edges.length >= 1) {
-		// 	threatModelerGuidProperty = Editor.commonEdgeProperties?.find(p => p.name === 'threatmodelerguid');
-		// }
-		// if (threatModelerGuidProperty) {
-		// 	this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
-		// }
+		
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
