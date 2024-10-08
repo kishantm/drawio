@@ -19229,7 +19229,10 @@
 		for (let cellId in model.cells) {
 			let cell = model.cells[cellId];
 			let style = this.editor.graph.getCellStyle(cell);
-			return !mxUtils.getValue(style, 'threatmodelerguid', '');
+			let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '');
+			if (isUnmapped) {
+				unmappedCells.push(cell);
+			}
 		}
 		this.graph.highlightCells(unmappedCells, "#ffafaf", 1000 * 60 * 60, 1, 0.5);
 	}
