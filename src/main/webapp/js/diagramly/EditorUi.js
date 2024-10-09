@@ -19233,7 +19233,9 @@
 			if (isUnmapped) {
 				unmappedCells.push(cell);
 				style['fillColor'] = "#ffafaf80";
+				model.beginUpdate();
 				model.setStyle(cell, style);
+				model.endUpdate();
 			}
 		}
 		// this.editor.graph.highlightCells(unmappedCells, "#ffafaf", 1000 * 60 * 60, 1, 0.5);
