@@ -19229,7 +19229,7 @@
 		for (let cellId in model.cells) {
 			let cell = model.cells[cellId];
 			let style = this.editor.graph.getCellStyle(cell);
-			let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '');
+			let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '') && cell.geometry;
 			if (isUnmapped) {
 				unmappedCells.push(cell);
 			}
