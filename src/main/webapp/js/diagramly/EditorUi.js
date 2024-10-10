@@ -19290,7 +19290,7 @@
 				// Recursively check if the child is a group
 				if (graph.isCellCollapsed(child) || graph.getModel().getChildCount(child) > 0) {
 					// If it is a group, recurse into its children
-					highlightNonMatchingCellsAndEdges(child);
+					highlightNonMatchingCellsAndEdges(child, highlightList);
 				}
 			}
 	
