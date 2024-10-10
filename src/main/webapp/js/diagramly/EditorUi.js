@@ -19240,6 +19240,7 @@
 			}
 		}
 		this.editor.graph.highlightCells(unmappedCells, "#ffafaf", 10000, 0.5);
+		this.editor.graph.highlightCell(unmappedCells[1], "#ffafaf", 10000, 0.5, 10);
 	}
 
 	EditorUi.prototype.resetHighlightUnmappedVerticesAndEdges = function () {
