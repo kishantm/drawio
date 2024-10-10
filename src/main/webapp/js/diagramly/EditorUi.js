@@ -17270,6 +17270,11 @@
 						this.highlightUnmappedVerticesAndEdges(data);
 						return;
 					}
+					else if (data.action == 'highlightCellIds')
+						{
+							this.highlightCellIds(data);
+							return;
+						}
 					else if (data.action == 'saveDiagram') {
 						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
 						if (saveButton) {
@@ -19278,6 +19283,34 @@
 				}
 			}
 		}
+	}
+
+	EditorUi.prototype.highlightCellIds = function (msg) {
+		let graph = this.editor.graph;
+		let highlightList = [];
+		msg.cellIds?.forEach(cellId => {
+			let cell = model.getCell(cellId);
+			var state = graph.view.getState(cell);
+			if (state) {
+				let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
+				highlight.highlight(state); // Highlight the vertex
+				highlightList.push(highlight);
+			}
+		});
+		setTimeout(() => {
+			highlightList.forEach(hl => {
+				if (hl.shape != null) {
+					mxUtils.setPrefixedStyle(hl.shape.node.style,
+						'transition', 'all 1200ms ease-in-out');
+					hl.shape.node.style.opacity = 0;
+				}
+
+				// Destroys the highlight after the fade
+				setTimeout(function () {
+					hl.destroy();
+				}, 1200);
+			});
+		}, msg.duration || 10000);
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
