@@ -19223,30 +19223,72 @@
 	}
 
 	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function () {
-		let model = this.editor.graph.getModel();
-		console.log('highlightUnmappedVerticesAndEdges', model);
-		let unmappedCells = [];
-		for (let cellId in model.cells) {
-			let cell = model.cells[cellId];
-			let style = this.editor.graph.getCellStyle(cell);
-			let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '') && cell.geometry;
-			if (isUnmapped) {
-				unmappedCells.push(cell);
-				console.log(this.editor.graph.view.getState(cell));
-				// style['fillColor'] = "#ffafaf80";
-				// model.beginUpdate();
-				// model.setStyle(cell, style);
-				// model.endUpdate();
-			}
-		}
-		this.editor.graph.highlightCells(unmappedCells, "#ffafaf", 10000, 0.5);
-		this.editor.graph.highlightCell(unmappedCells[1], "#ffafaf", 10000, 0.5, 10);
+		// let model = this.editor.graph.getModel();
+		// console.log('highlightUnmappedVerticesAndEdges', model);
+		// let unmappedCells = [];
+		// for (let cellId in model.cells) {
+		// 	let cell = model.cells[cellId];
+		// 	let style = this.editor.graph.getCellStyle(cell);
+		// 	let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '') && cell.geometry;
+		// 	if (isUnmapped) {
+		// 		unmappedCells.push(cell);
+		// 		console.log(this.editor.graph.view.getState(cell));
+		// 		// style['fillColor'] = "#ffafaf80";
+		// 		// model.beginUpdate();
+		// 		// model.setStyle(cell, style);
+		// 		// model.endUpdate();
+		// 	}
+		// }
+		// this.editor.graph.highlightCells(unmappedCells, "#ffafaf", 10000, 0.5);
+		// this.editor.graph.highlightCell(unmappedCells[1], "#ffafaf", 10000, 0.5, 10);
+		this.highlightCellCustom(this.editor.graph.getDefaultParent());
 	}
 
 	EditorUi.prototype.resetHighlightUnmappedVerticesAndEdges = function () {
 		var model = this.editor.graph.getModel();
 		console.log('resetHighlightUnmappedVerticesAndEdges', model);
 		
+	}
+
+	EditorUi.prototype.highlightCellCustom = function(cell) {
+		let graph = this.editor.graph;
+		let children = graph.getModel().getChildCells(cell); // Get child cells (including groups)
+
+		// Iterate through the children
+		for (var i = 0; i < children.length; i++) {
+			var child = children[i];
+	
+			// Get the cell's style
+			var cellStyle = graph.getCellStyle(child);
+	
+			// Check if it's a vertex or group
+			if (graph.getModel().isVertex(child)) {
+				// If vertex style doesn't match, highlight it
+				if (!cellStyle['threatmodelerguid']) {
+					var state = graph.view.getState(child);
+					if (state) {
+						highlight.highlight(state); // Highlight the vertex
+					}
+				}
+	
+				// Recursively check if the child is a group
+				if (graph.isCellCollapsed(child) || graph.getModel().getChildCount(child) > 0) {
+					// If it is a group, recurse into its children
+					highlightNonMatchingCellsAndEdges(child);
+				}
+			}
+	
+			// Check if it's an edge
+			if (graph.getModel().isEdge(child)) {
+				// If edge style doesn't match, highlight it
+				if (!cellStyle['threatmodelerguid']) {
+					var edgeState = graph.view.getState(child);
+					if (edgeState) {
+						highlight.highlight(edgeState); // Highlight the edge
+					}
+				}
+			}
+		}
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
