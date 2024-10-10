@@ -8176,15 +8176,10 @@
 	 */
 	Graph.prototype.highlightCells = function(cells, color, duration, opacity)
 	{
-		let hs = [];
 		for (var i = 0; i < cells.length; i++)
 		{
-			let h = (this.highlightCell(cells[i], color, duration, opacity));
-			console.log(h);
-			hs.push(h);
+			this.highlightCell(cells[i], color, duration, opacity);
 		}
-		console.log(hs);
-		window.hs = hs;
 	};
 	
 	/**

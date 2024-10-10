@@ -19241,7 +19241,22 @@
 		// }
 		// this.editor.graph.highlightCells(unmappedCells, "#ffafaf", 10000, 0.5);
 		// this.editor.graph.highlightCell(unmappedCells[1], "#ffafaf", 10000, 0.5, 10);
-		this.highlightCellCustom(this.editor.graph.getDefaultParent());
+		let highlightList = [];
+		this.highlightCellCustom(this.editor.graph.getDefaultParent(), highlightList);
+		setTimeout(() => {
+			highlightList.forEach(hl => {
+				if (hl.shape != null) {
+					mxUtils.setPrefixedStyle(hl.shape.node.style,
+						'transition', 'all 1200ms ease-in-out');
+					hl.shape.node.style.opacity = 0;
+				}
+
+				// Destroys the highlight after the fade
+				setTimeout(function () {
+					hl.destroy();
+				}, 1200);
+			});
+		}, 10000);
 	}
 
 	EditorUi.prototype.resetHighlightUnmappedVerticesAndEdges = function () {
@@ -19250,10 +19265,11 @@
 		
 	}
 
-	EditorUi.prototype.highlightCellCustom = function(cell) {
+	EditorUi.prototype.highlightCellCustom = function(cell, highlightList) {
 		let graph = this.editor.graph;
 		let children = graph.getModel().getChildCells(cell); // Get child cells (including groups)
-		let highlight = new mxCellHighlight(graph, '#ffafaf', 4)
+		let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
+		highlightList.push(highlight);
 		// Iterate through the children
 		for (var i = 0; i < children.length; i++) {
 			var child = children[i];
