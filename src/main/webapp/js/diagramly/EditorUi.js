@@ -19268,7 +19268,6 @@
 	EditorUi.prototype.highlightCellCustom = function(cell, highlightList) {
 		let graph = this.editor.graph;
 		let children = graph.getModel().getChildCells(cell); // Get child cells (including groups)
-		let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
 		highlightList.push(highlight);
 		// Iterate through the children
 		for (var i = 0; i < children.length; i++) {
@@ -19283,6 +19282,7 @@
 				if (!cellStyle['threatmodelerguid']) {
 					var state = graph.view.getState(child);
 					if (state) {
+						let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
 						highlight.highlight(state); // Highlight the vertex
 					}
 				}
@@ -19300,6 +19300,7 @@
 				if (!cellStyle['threatmodelerguid']) {
 					var edgeState = graph.view.getState(child);
 					if (edgeState) {
+						let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
 						highlight.highlight(edgeState); // Highlight the edge
 					}
 				}
