@@ -19232,6 +19232,7 @@
 			let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '') && cell.geometry;
 			if (isUnmapped) {
 				unmappedCells.push(cell);
+				console.log(this.editor.graph.view.getState(cell));
 				// style['fillColor'] = "#ffafaf80";
 				// model.beginUpdate();
 				// model.setStyle(cell, style);
