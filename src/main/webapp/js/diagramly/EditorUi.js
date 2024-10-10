@@ -17266,15 +17266,10 @@
 						return;
 					}
 					else if (data.action == 'highlightUnmappedVerticesAndEdges')
-						{
-							this.highlightUnmappedVerticesAndEdges(data);
-							return;
-						}
-					else if (data.action == 'resetHighlightUnmappedVerticesAndEdges')
-						{
-							this.resetHighlightUnmappedVerticesAndEdges(data);
-							return;
-						}
+					{
+						this.highlightUnmappedVerticesAndEdges(data);
+						return;
+					}
 					else if (data.action == 'saveDiagram') {
 						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
 						if (saveButton) {
@@ -19222,25 +19217,7 @@
 		}
 	}
 
-	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function () {
-		// let model = this.editor.graph.getModel();
-		// console.log('highlightUnmappedVerticesAndEdges', model);
-		// let unmappedCells = [];
-		// for (let cellId in model.cells) {
-		// 	let cell = model.cells[cellId];
-		// 	let style = this.editor.graph.getCellStyle(cell);
-		// 	let isUnmapped = !mxUtils.getValue(style, 'threatmodelerguid', '') && cell.geometry;
-		// 	if (isUnmapped) {
-		// 		unmappedCells.push(cell);
-		// 		console.log(this.editor.graph.view.getState(cell));
-		// 		// style['fillColor'] = "#ffafaf80";
-		// 		// model.beginUpdate();
-		// 		// model.setStyle(cell, style);
-		// 		// model.endUpdate();
-		// 	}
-		// }
-		// this.editor.graph.highlightCells(unmappedCells, "#ffafaf", 10000, 0.5);
-		// this.editor.graph.highlightCell(unmappedCells[1], "#ffafaf", 10000, 0.5, 10);
+	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function (msg) {
 		let highlightList = [];
 		this.highlightCellCustom(this.editor.graph.getDefaultParent(), highlightList);
 		setTimeout(() => {
@@ -19256,13 +19233,7 @@
 					hl.destroy();
 				}, 1200);
 			});
-		}, 10000);
-	}
-
-	EditorUi.prototype.resetHighlightUnmappedVerticesAndEdges = function () {
-		var model = this.editor.graph.getModel();
-		console.log('resetHighlightUnmappedVerticesAndEdges', model);
-		
+		}, msg.duration || 10000);
 	}
 
 	EditorUi.prototype.highlightCellCustom = function(cell, highlightList) {
