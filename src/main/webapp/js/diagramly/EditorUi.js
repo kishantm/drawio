@@ -19253,7 +19253,7 @@
 	EditorUi.prototype.highlightCellCustom = function(cell) {
 		let graph = this.editor.graph;
 		let children = graph.getModel().getChildCells(cell); // Get child cells (including groups)
-
+		let highlight = new mxCellHighlight(graph, '#ffafaf', 4)
 		// Iterate through the children
 		for (var i = 0; i < children.length; i++) {
 			var child = children[i];
