@@ -19287,6 +19287,7 @@
 
 	EditorUi.prototype.highlightCellIds = function (msg) {
 		let graph = this.editor.graph;
+		let model = graph.getModel();
 		let highlightList = [];
 		msg.cellIds?.forEach(cellId => {
 			let cell = model.getCell(cellId);
