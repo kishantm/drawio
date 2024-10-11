@@ -5653,9 +5653,9 @@
 			{
 				var prop = properties[key];
 
-				if (key != 'threatmodelerguid') {
-					continue;
-				};
+				// if (key != 'threatmodelerguid') {
+				// 	continue;
+				// };
 				
 				if (typeof(prop.isVisible) == 'function')
 				{

@@ -17265,6 +17265,16 @@
 						this.handleSetThreatModelerGuidProperty(data);
 						return;
 					}
+					else if (data.action == 'highlightUnmappedVerticesAndEdges')
+					{
+						this.highlightUnmappedVerticesAndEdges(data);
+						return;
+					}
+					else if (data.action == 'highlightCellIds')
+						{
+							this.highlightCellIds(data);
+							return;
+						}
 					else if (data.action == 'saveDiagram') {
 						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
 						if (saveButton) {
@@ -19210,6 +19220,98 @@
 		if (threatModelerGuidProperty) {
 			this.editor.applyStyleVal("threatmodelerguid", newVal, threatModelerGuidProperty);
 		}
+	}
+
+	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function (msg) {
+		let highlightList = [];
+		this.highlightCellCustom(this.editor.graph.getDefaultParent(), highlightList, msg.highlightColor);
+		setTimeout(() => {
+			highlightList.forEach(hl => {
+				if (hl.shape != null) {
+					mxUtils.setPrefixedStyle(hl.shape.node.style,
+						'transition', 'all 1200ms ease-in-out');
+					hl.shape.node.style.opacity = 0;
+				}
+
+				// Destroys the highlight after the fade
+				setTimeout(function () {
+					hl.destroy();
+				}, 1200);
+			});
+		}, msg.duration || 10000);
+	}
+
+	EditorUi.prototype.highlightCellCustom = function(cell, highlightList, highlightColor) {
+		let graph = this.editor.graph;
+		let children = graph.getModel().getChildCells(cell); // Get child cells (including groups)
+		// Iterate through the children
+		for (var i = 0; i < children.length; i++) {
+			var child = children[i];
+	
+			// Get the cell's style
+			var cellStyle = graph.getCellStyle(child);
+	
+			// Check if it's a vertex or group
+			if (graph.getModel().isVertex(child)) {
+				// If vertex style doesn't match, highlight it
+				if (!cellStyle['threatmodelerguid']) {
+					var state = graph.view.getState(child);
+					if (state) {
+						let highlight = new mxCellHighlight(graph, highlightColor || '#ffafaf', 4);
+						highlight.highlight(state); // Highlight the vertex
+						highlightList.push(highlight);
+					}
+				}
+	
+				// Recursively check if the child is a group
+				if (graph.isCellCollapsed(child) || graph.getModel().getChildCount(child) > 0) {
+					// If it is a group, recurse into its children
+					this.highlightCellCustom(child, highlightList);
+				}
+			}
+	
+			// Check if it's an edge
+			if (graph.getModel().isEdge(child)) {
+				// If edge style doesn't match, highlight it
+				if (!cellStyle['threatmodelerguid']) {
+					var edgeState = graph.view.getState(child);
+					if (edgeState) {
+						let highlight = new mxCellHighlight(graph, highlightColor || '#ffafaf', 4);
+						highlight.highlight(edgeState); // Highlight the edge
+						highlightList.push(highlight);
+					}
+				}
+			}
+		}
+	}
+
+	EditorUi.prototype.highlightCellIds = function (msg) {
+		let graph = this.editor.graph;
+		let model = graph.getModel();
+		let highlightList = [];
+		msg.cellIds?.forEach(cellId => {
+			let cell = model.getCell(cellId);
+			var state = graph.view.getState(cell);
+			if (state) {
+				let highlight = new mxCellHighlight(graph, msg.highlightColor || '#ffafaf', 4);
+				highlight.highlight(state); // Highlight the vertex
+				highlightList.push(highlight);
+			}
+		});
+		setTimeout(() => {
+			highlightList.forEach(hl => {
+				if (hl.shape != null) {
+					mxUtils.setPrefixedStyle(hl.shape.node.style,
+						'transition', 'all 1200ms ease-in-out');
+					hl.shape.node.style.opacity = 0;
+				}
+
+				// Destroys the highlight after the fade
+				setTimeout(function () {
+					hl.destroy();
+				}, 1200);
+			});
+		}, msg.duration || 10000);
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
