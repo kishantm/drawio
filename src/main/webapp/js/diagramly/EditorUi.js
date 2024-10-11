@@ -19293,7 +19293,7 @@
 			let cell = model.getCell(cellId);
 			var state = graph.view.getState(cell);
 			if (state) {
-				let highlight = new mxCellHighlight(graph, '#2052ca', 4);
+				let highlight = new mxCellHighlight(graph, msg.highlightColor || '#ffafaf', 4);
 				highlight.highlight(state); // Highlight the vertex
 				highlightList.push(highlight);
 			}
