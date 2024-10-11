@@ -19224,7 +19224,7 @@
 
 	EditorUi.prototype.highlightUnmappedVerticesAndEdges = function (msg) {
 		let highlightList = [];
-		this.highlightCellCustom(this.editor.graph.getDefaultParent(), highlightList);
+		this.highlightCellCustom(this.editor.graph.getDefaultParent(), highlightList, msg.highlightColor);
 		setTimeout(() => {
 			highlightList.forEach(hl => {
 				if (hl.shape != null) {
@@ -19241,7 +19241,7 @@
 		}, msg.duration || 10000);
 	}
 
-	EditorUi.prototype.highlightCellCustom = function(cell, highlightList) {
+	EditorUi.prototype.highlightCellCustom = function(cell, highlightList, highlightColor) {
 		let graph = this.editor.graph;
 		let children = graph.getModel().getChildCells(cell); // Get child cells (including groups)
 		// Iterate through the children
@@ -19257,7 +19257,7 @@
 				if (!cellStyle['threatmodelerguid']) {
 					var state = graph.view.getState(child);
 					if (state) {
-						let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
+						let highlight = new mxCellHighlight(graph, highlightColor || '#ffafaf', 4);
 						highlight.highlight(state); // Highlight the vertex
 						highlightList.push(highlight);
 					}
@@ -19276,7 +19276,7 @@
 				if (!cellStyle['threatmodelerguid']) {
 					var edgeState = graph.view.getState(child);
 					if (edgeState) {
-						let highlight = new mxCellHighlight(graph, '#ffafaf', 4);
+						let highlight = new mxCellHighlight(graph, highlightColor || '#ffafaf', 4);
 						highlight.highlight(edgeState); // Highlight the edge
 						highlightList.push(highlight);
 					}
