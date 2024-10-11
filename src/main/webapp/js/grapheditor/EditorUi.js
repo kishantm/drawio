@@ -88,7 +88,7 @@ EditorUi = function(editor, container, lightbox)
 		}
 		parent.postMessage(JSON.stringify({
 			event: 'selectionChange',
-			message: { selectionState: { ...sstate, cells: sstate.map(c => c.id), vertices: undefined, edges: undefined }, isMultipleSelected, selectionType, selectedCellId, selectedCellMXObjectId, selectedThreatModelerGuid }
+			message: { selectionState: { ...sstate, cells: sstate.cells.map(c => c.id), vertices: undefined, edges: undefined }, isMultipleSelected, selectionType, selectedCellId, selectedCellMXObjectId, selectedThreatModelerGuid }
 		}), '*');
 	});
 	
