@@ -17271,10 +17271,15 @@
 						return;
 					}
 					else if (data.action == 'highlightCellIds')
-						{
-							this.highlightCellIds(data);
-							return;
-						}
+					{
+						this.highlightCellIds(data);
+						return;
+					}
+					else if (data.action == 'unmapCells')
+					{
+						this.unmapCells(data);
+						return;
+					}
 					else if (data.action == 'saveDiagram') {
 						let saveButton = document.querySelector('.geBigButton[title^="Save "]');
 						if (saveButton) {
@@ -19312,6 +19317,15 @@
 				}, 1200);
 			});
 		}, msg.duration || 10000);
+	}
+
+	EditorUi.prototype.unmapCells = function (msg) {
+		let graph = this.editor.graph;
+		let model = graph.getModel();
+		msg.cellIds?.forEach(cellId => {
+			let cell = model.getCell(cellId);
+			graph.setCellStyles("threatmodelerguid", null, cell);
+		});
 	}
 
 	EditorUi.prototype.remoteInvoke = function(remoteFn, remoteFnArgs, msgMarkers, callback, error)
