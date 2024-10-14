@@ -19324,7 +19324,7 @@
 		let model = graph.getModel();
 		msg.cellIds?.forEach(cellId => {
 			let cell = model.getCell(cellId);
-			graph.setCellStyles("threatmodelerguid", null, cell);
+			graph.setCellStyles("threatmodelerguid", null, [cell]);
 		});
 	}
 
