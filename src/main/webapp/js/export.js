@@ -372,7 +372,7 @@ function render(data)
 				//Electron pdf export
 				if (mxIsElectron)
 				{
-					try 
+					try
 					{
 						electron.registerMsgListener('get-svg-data', (arg) => 
 						{
@@ -384,16 +384,14 @@ function render(data)
 							{
 								bg = null;
 							}
-							
-							if (data.theme == 'dark')
-							{
-								// TODO Support enableCssDarkMode?
-								graph.shapeForegroundColor = Editor.lightColor;
-								graph.shapeBackgroundColor = Editor.darkColor;
-								graph.stylesheet = graph.getDefaultStylesheet();
-								graph.refresh();
-							}
 
+							var theme = 'auto';
+
+							if (data.theme != null)
+							{
+								theme = data.theme;
+							}
+							
 							var linkTarget = null;
 
 							if (data.linkTarget == 'same-win')
@@ -405,7 +403,8 @@ function render(data)
 								linkTarget = '_blank';
 							}
 
-							var svgRoot = graph.getSvg(bg, expScale, 0, false, null, true, null, null, linkTarget);
+							var svgRoot = graph.getSvg(bg, expScale, data.border, false, null,
+								true, null, null, linkTarget, null, null, theme);
 							
 							if (graph.shadowVisible)
 							{
@@ -430,18 +429,67 @@ function render(data)
 									svgRoot.setAttribute('content', getFileXml());
 								}
 
-								electron.sendMessage('svg-data', Graph.xmlDeclaration + '\n' + ((editable) ? Graph.svgFileComment + '\n' : '') +
-															 Graph.svgDoctype + '\n' + mxUtils.getXml(svgRoot));
+								electron.sendMessage('svg-data',
+									Graph.xmlDeclaration + '\n' +
+									((editable) ? Graph.svgFileComment + '\n' : '') +
+									Graph.svgDoctype + '\n' + mxUtils.getXml(svgRoot));
 							};
 
-							if (data.embedImages == '1')
+							function embedFontsDone()
 							{
-								var tmpEditor = new Editor();
-								tmpEditor.convertImages(svgRoot, doSend);
+								if (data.embedImages == '1')
+								{
+									var tmpEditor = new Editor();
+									tmpEditor.convertImages(svgRoot, doSend);
+								}
+								else
+								{
+									doSend();
+								}
+							}
+
+							if (data.embedFonts == '1')
+							{
+								var extFonts = graph.getCustomFonts();
+		
+								// Adds external fonts
+								// TODO CSP will not allow external fonts!
+								if (extFonts.length > 0)
+								{
+									var svgDoc = svgRoot.ownerDocument;
+									var style = (svgDoc.createElementNS != null) ?
+										svgDoc.createElementNS(mxConstants.NS_SVG, 'style') : svgDoc.createElement('style');
+									(svgDoc.setAttributeNS != null) ? style.setAttributeNS('type', 'text/css') :
+										style.setAttribute('type', 'text/css');
+									
+									var prefix = '';
+									var postfix = '';
+											
+									for (var i = 0; i < extFonts.length; i++)
+									{
+										var fontName = extFonts[i].name, fontUrl = extFonts[i].url;
+										
+										if (Graph.isCssFontUrl(fontUrl))
+										{
+											prefix += '@import url(' + Graph.rewriteGoogleFontUrl(fontUrl) + ');\n';
+										}
+										else
+										{
+											postfix += '@font-face {\n' +
+												'font-family: "' + fontName + '";\n' + 
+												'src: url("' + fontUrl + '");\n}\n';
+										}				
+									}
+									
+									style.appendChild(svgDoc.createTextNode(prefix + postfix));
+									svgRoot.getElementsByTagName('defs')[0].appendChild(style);
+								}
+
+								EditorUi.prototype.replaceAlternateContent(svgRoot, null, embedFontsDone);
 							}
 							else
 							{
-								doSend();
+								embedFontsDone();
 							}
 						});
 						
@@ -646,7 +694,8 @@ function render(data)
 	function renderPage(currentPageId)
 	{
 		// Configures math typesetting
-		graph.mathEnabled = xmlDoc.documentElement.getAttribute('math') == '1';
+		math = xmlDoc.documentElement.getAttribute('math') == '1';
+		graph.mathEnabled = math;
 
 		// Sets grid size
 		var gs = xmlDoc.documentElement.getAttribute('gridSize');

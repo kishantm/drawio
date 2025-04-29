@@ -1,3 +1,347 @@
+23-APR-2025: 26.2.15
+
+- Internal build
+
+22-APR-2025: 26.2.14
+
+- Fixes NPE in VSDX import
+- Fixes initial sidebar width for Firefox
+- Adds urlParam, enableSW, to force enable service worker
+- Adds missing jira cloud viewer html to SW
+
+16-APR-2025: 26.2.13
+
+- Adds missing Exit Group and Home menu items [jgraph/drawio#5021]
+
+11-APR-2025: 26.2.12
+
+- Fixes build error
+
+11-APR-2025: 26.2.11
+
+- Moves Mermaid menu from Advanced to Insert menu
+- [conf cloud] Adds option to Gliffy mass import to check current page when linked diagrams fail [DID-14921]
+- [vsdx]: Partial fix for themed fill color[DID-14963]
+
+10-APR-2025: 26.2.10
+
+- [conf cloud] Fixed diagrams in custom templates [DID-14800]
+
+07-APR-2025: 26.2.9
+
+- [conf cloud] Fixed migrated server custom libraries names for Conf v8.x [DID-14902]
+
+05-APR-2025: 26.2.8
+
+- Adds ALLOW_INTERNAL_10_NET=1 for 10.x.x.x proxy usage [jgraph/drawio#4966]
+- Adds try/catch for TENANT_ID exception [jgraph/drawio#4909]
+- Moves mermaid2drawio.js back into public build
+
+05-APR-2025: 26.2.7
+
+- [conf cloud] and GraphViewer. Removes tooltips config. Pages use file tooltips config [DID-14767]
+- Fixes filename and comments button for Conf Cloud
+
+04-APR-2025: 26.2.6
+
+- Updates DOMPurify from 3.2.4 to 3.2.5
+- Adds primaryColor option for custom shape properties
+- Adds mxUtils.getColorValue
+- [conf cloud] Adds support for live docs [DID-14520]
+- Adds Note shape in Misc sidebar
+- [conf cloud] Fixed migrated server custom libraries names [DID-14902]
+
+03-APR-2025: 26.2.5
+
+- Fixes Google Drive folder picker z-index
+- Fixes OneDrive folder picker size
+- [conf cloud] Fixes headers anchor [DID-14864]
+
+02-APR-2025: 26.2.4
+
+- Fixes possible NPE in Sidebar.disablePointerEvents
+- [conf cloud] Added support for imported Gliffy images with the added version prefix to the name [DID-14867]
+- Fixes possible NPE in ColorDialog
+
+01-APR-2025: 26.2.3
+
+- [conf cloud] Fixes viewer background
+
+31-MAR-2025: 26.2.2
+
+- Adds Tamil translations
+- Fixes Confluence cloud lightbox [DID-14879]
+
+31-MAR-2025: 26.2.1
+
+- [conf cloud] Fixes possible NPE in LinkDialog
+- Fixes updateUserElement is not a function
+- Fixes initial state of default theme in embed mode
+- Fixes background for Notion extension
+
+31-MAR-2025: 26.2.0
+
+- [conf cloud] Removes lucidchartObject from the imported diagram and Conf loaded diagrams [DID-14777]
+- [conf cloud] Added debug message to script load error [DID-14714]
+- Fixes background color in PNG export [jgraph/drawio-desktop#2049]
+- Adds styles to clipboard and default style [jgraph/drawio#4989]
+- Refactors editor CSS
+
+25-MAR-2025: 26.1.3
+
+- Fixes handling of duplicate IDs in mxCodec [DID-14777]
+- [conf cloud] Potential fix for link dialog size [DID-14793]
+
+24-MAR-2025: 26.1.2
+
+- Increases mermaid text size to 900k [jgraph/drawio#4761]
+- Jira Cloud: Replaced deprecated search APIs
+- Disables pusher.min.js loading in lockdown mode
+- [conf cloud] Potential fix to Gliffy import incorrect version pinning [DID-14749]
+- [conf cloud] Added sorting to attachments and anchors in link dialog [DID-14793]
+
+14-MAR-2025: 26.1.1
+
+- Adds fill-/strokeColorStyles for XML stencils
+- Fixes text selection on shape drag from sidebar [jgraph/drawio-desktop#2015]
+- [conf cloud] Fixes import libraries error handling
+- Updates placeholders in resize preview [jgraph/drawio#4958]
+- Find/replace sets focus on search input [jgraph/drawio#4959]
+
+05-MAR-2025: 26.1.0
+
+- Tenant for OneDrive fix [jgraph/drawio#4905]
+- Fixes print to PDF export dialog size and button title
+- Fixed images in vsdx export with multiple pages and also image scale [DID-14515]
+- Removes vsdx export functionality
+
+21-FEB-2025: 26.0.16
+
+- Fixes colors in vsdx export [DID-14515]
+- Fixes background color option for selection text
+
+19-FEB-2025: 26.0.15
+
+- Adds default dark mode support for SVG images
+- Shows word wrap option for non-resizable cells [jgraph/drawio-desktop#1994]
+- Adds word wrapping to attributes section of entity shape [jgraph/drawio-desktop#1994]
+- [conf cloud] Fixes Aura compatibility [DID-14484]
+
+14-FEB-2025: 26.0.14
+
+- Fixes change of line height for wrapped text [jgraph/drawio#4902]
+- Adds support for older browsers with no light-dark colors
+- Improves compatibility of exported SVG
+- Improves handling of ignored stroke-widths in clipSvgDataUri
+- Fixes handling of single color values in SVG with editable CSS rules
+
+12-FEB-2025: 26.0.13
+
+- Adds appearance option in publish and embed dialogs
+- Forces light export of diagrams with no adaptive colors
+- Skips light-dark function for same light and dark color
+- [conf cloud] Adds support for pagePin in Gliffy import
+- Adds enableLightDarkColors configuration
+
+07-FEB-2025: 26.0.12
+
+- [conf cloud] Fixes simple view of imported Gliffy diagrams [DID-14343]
+- [conf cloud] Disable direct editing if a page has unpublished changes [DID-14257]
+- Fixes handling of Ctrl+Enter on Windows [jgraph/drawio#4883]
+- Adds transparent background option in iframe embed dialog [jgraph/drawio#4884]
+- Handles Ctrl+S while editing labels [jgraph/drawio#4885]
+- Fixes editing toolbar alignment in embed mode [jgraph/drawio#4874]
+- Updates DOMPurify from 3.2.3 to 3.2.4
+- Handles subgroups in GitLab paths [jgraph/drawio#4870]
+
+04-FEB-2025: 26.0.11
+
+- [conf cloud] Show error when embed diagram page not found (deleted or restricted) [DID-14304]
+- [conf cloud] Fixed realtime collaboration [DID-12871]
+
+28-JAN-2025: 26.0.10
+
+- [conf cloud] Fixes Gliffy mass import of linked diagrams when done in separate runs [DID-14151]
+- Enhanced page links in vsdx import [DID-14276]
+
+27-JAN-2025: 26.0.9
+
+- Fixes possible split is not a function in StyleFormatPanel
+- Uses light custom background with simple adaptive colors [jgraph/drawio-desktop#1978]
+
+24-JAN-2025: 26.0.8
+
+- Improves VSDX Import [DID-14176]
+- [conf cloud]] Fixes Gliffy diagrams with core ui icons [DID-14260]
+
+22-JAN-2025: 26.0.7
+
+- Fixes for Atlas theme dark mode
+- Dark mode fixes
+- Changes raster images to SVG
+- Stroke width fix for some BPMN2 shapes. Ticket [jgraph/drawio#4861]
+- [conf cloud] Adds disableGithubEmbedding config to hide Github tab from embed editor [DID-14232]
+
+15-JAN-2025: 26.0.6
+
+- Various dark mode improvements
+
+10-JAN-2025: 26.0.5
+
+- Fixes Ctrl+Shift+G to enable grid [jgraph/drawio#4825]
+- Replaces three dots with layers icon [jgraph/drawio-desktop#1953]
+- Mermaid2drawio: Added support for new flowchart shapes and fixed [jgraph/drawio-#4832]
+- Adds editableCssRules=.* for imported SVG images [jgraph/drawio#4721]
+- Adds default and font keyword for stencil colors [jgraph/drawio#4723]
+
+06-JAN-2025: 26.0.4
+
+- Disables dark mode in viewer by default [jgraph/drawio#3701]
+- Adds dark mode option in embed dialog
+
+03-JAN-2025: 26.0.3
+
+- Fixes slope angle property for parallelogram and hexagon [jgraph/drawio#3672]
+- Adds arcSize property for chevron [jgraph/drawio#4813]
+- Adds units for width, height and length [jgraph/drawio#4362]
+- [conf cloud] Fixed Safari dark mode [DID-14095]
+- Fixes missing data-cell-id in EditorUi.getEmbeddedSvg [jgraph/drawio#4532]
+
+29-DEC-2024: 26.0.2
+
+- NPE fixes
+
+28-DEC-2024: 26.0.1
+
+- Updates mermaid to v11.4.1
+
+27-DEC-2024: 26.0.0
+
+- Updates DOMPurify from 3.2.2 to 3.2.3
+- Adds dark mode specific colour scheme
+
+05-DEC-2024: 25.0.3
+
+- Adds entering custom zoom via toolbar in simple UI
+- Adds back jszip to deployment
+
+03-DEC-2024: 25.0.2
+
+- Internal release
+
+30-NOV-2024: 25.0.1
+
+- Updates DOMPurify from 3.1.5 to 3.2.2 with fix for [DID-13161]
+
+29-NOV-2024: 25.0.0
+
+- Restructures project files
+
+28-NOV-2024: 24.9.3
+
+- NPE fixes
+
+27-NOV-2024: 24.9.2
+
+- [conf cloud] Improving theme detection timing [DID-13083]
+
+25-NOV-2024: 24.9.1
+
+- Reverts DOMPurifty to 3.1.5 [DID-13161]
+
+23-NOV-2024: 24.9.0
+
+- Updates workbox to 7.3.0 in build docker image
+
+22-NOV-2024: 24.8.9
+
+- Forces service worker to reload Confluence and Jira html to fetch the new CSP header [DID-13083]
+
+21-NOV-2024: 24.8.8
+
+- Fixes possible NPE
+
+21-NOV-2024: 24.8.7
+
+- Fixes font size and line height change for selection text [jgraph/drawio-desktop#1880]
+- Removes implicit CSS values and empty style attributes from DOM
+- Adds OpenStack stencils
+- Adds Power Platform stencils to Azure and Dynamics365 stencils
+
+13-NOV-2024: 24.8.6
+
+- Corrects sidebar build
+
+13-NOV-2024: 24.8.5
+
+- [conf cloud] Removes target options from the page IDs export [DID-12937]
+- Adds Alibaba Cloud stencils
+- [teams] Fixes mobile app file picker
+
+04-NOV-2024: 24.8.4
+
+- [conf cloud] Removes confluence embed file hash to fix embed iframe [DID-12936]
+
+25-OCT-2024: 24.8.3
+
+- [desktop] Fixes print page size [jgraph/drawio-desktop#1893]
+
+23-OCT-2024: 24.8.2
+
+- Adds IBM Cloud stencil set
+
+22-OCT-2024: 24.8.1
+
+- Initial convert of confluence connect manifest to forge
+
+18-OCT-2024: 24.8.0
+
+- Fixes math typesetting in svg export [jgraph/drawio-desktop#1874]
+- Adds new Citrix stencil set
+- Initial convert of jira connect manifest to forge
+- [jira cloud] Fixes search page error
+
+30-SEP-2024: 24.7.17
+
+- [conf cloud] Fixes showing older versions of a diagram in page history [DID-12641]
+- [conf cloud] Adds libraries edit/add from the editor [DID-12585]
+
+20-SEP-2024: 24.7.16
+
+- Fixes editorui parameter for loadLibrary [DID-12644]
+
+19-SEP-2024: 24.7.15
+
+- Uses java17 for GAE deployment
+- [conf cloud] Adds diagram translation support via ["translateDiagrams": true] config
+- [conf cloud] Fixes a NPE [DID-12553]
+
+13-SEP-2024: 24.7.14
+
+- Updates to mermaid 11.2.0
+- [conf cloud] Uses retry-after header info when rate-limiting hits
+
+11-SEP-2024: 24.7.13
+
+- [conf cloud] Fixes errors in diagrams list
+
+05-SEP-2024: 24.7.12
+
+- Internal release
+
+05-SEP-2024: 24.7.11
+
+- Fixes possible XSS for tooltips in dev mode
+
+02-SEP-2024: 24.7.10
+
+- Internal release
+
+02-SEP-2024: 24.7.9
+
+- Fixes exit flag in save event message [jgraph/drawio#4010]
+- [conf cloud] Using viewerTimeout config in the editor also [DID-12425]
+
 28-AUG-2024: 24.7.8
 
 - Adds math typesetting support for Mermaid [drawio-desktop-1824]

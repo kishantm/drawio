@@ -255,7 +255,7 @@ function mxODPicker(container, previewFn, getODFilesList, getODFileInfo, getRece
 		width: 3, // The line thickness
 		radius: 5, // The radius of the inner circle
 		rotate: 0, // The rotation offset
-		color: '#000', // #rgb or #rrggbb
+		color: 'light-dark(#000000, #C0C0C0)', // #rgb or #rrggbb
 		speed: 1, // Rounds per second
 		trail: 60, // Afterglow percentage
 		shadow: false, // Whether to render a shadow
