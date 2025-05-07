@@ -4365,6 +4365,7 @@
 	 */
     EditorUi.initTheme = function()
     {
+		mxClient.link('stylesheet', STYLE_PATH + '/tm.css');
     	if (Editor.currentTheme == 'atlas' && !window.DRAWIO_PUBLIC_BUILD)
     	{
     		mxClient.link('stylesheet', STYLE_PATH + '/atlas.css');

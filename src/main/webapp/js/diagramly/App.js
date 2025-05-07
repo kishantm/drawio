@@ -1231,7 +1231,6 @@ App.main = function(callback, createUi)
 							}
 
 							doMain();
-							mxClient.link('stylesheet', STYLE_PATH + '/tm.css');
 						}
 					}
 					catch (e)
