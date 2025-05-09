@@ -31,3 +31,31 @@
 .geFormatSection:not(.show-format-section) {
 	display: none !important;
 }
+
+:root {
+    --panel-color: #f1f3f4;
+    --toolbar-color: #f1f3f4;
+    --workspace-color: #ececec;
+    --dark-toolbar-color: #f1f3f4;
+    --inactive-color: #e4e4e4;
+    --active-color: #c4c4c4;
+    --primary-color: #c2e7ff;
+    --primary-hover-color: #abcfe7;
+    --accent-color: #e1e9f7;
+    --accent-hover-color: #d8e5f8;
+    --accent-text-color: #0b57d0;
+    --border-color: #dadada;
+    --highlight-color: #e2e2e2;
+    --scrollbar-hover-color: #959798;
+    --text-color: #3F3F3F;
+    --dark-color: #f1f3f4;
+    --dark-panel-color: #f1f3f4;
+    --dark-border-color: #dadada;
+    --dark-text-color: #3F3F3F;
+    --dark-accent-color: #e1e9f7;
+    --dark-accent-text-color: #0b57d0;
+    --dark-active-accent-color: #004A77;
+    --dark-inverse-active-color: #c4c4c4;
+    --dark-highlight-color: #e2e2e2;
+    --dark-header-color: #1B1D1E;
+}
