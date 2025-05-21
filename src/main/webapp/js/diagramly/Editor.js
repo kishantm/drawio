@@ -3047,6 +3047,10 @@
 	 */
 	Editor.prototype.isCorsEnabledForUrl = function(url)
 	{
+		if (window.location.origin.includes('localhost') && url?.includes('localhost')) {
+			return true;
+		}
+
 		// Disables proxy for desktop and chrome app as it is served locally
 		if (mxClient.IS_CHROMEAPP || EditorUi.isElectronApp)
 		{
@@ -5649,9 +5653,9 @@
 			{
 				var prop = properties[key];
 
-				if (key != 'threatmodelerguid') {
-					continue;
-				};
+				// if (key != 'threatmodelerguid') {
+				// 	continue;
+				// };
 				
 				if (typeof(prop.isVisible) == 'function')
 				{
