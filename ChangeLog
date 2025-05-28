@@ -1,3 +1,57 @@
+23-MAY-2025: 27.0.9
+
+- Uses per-cell container for inputs/selects in property rows [jgraph/draw#5086]
+
+22-MAY-2025: 27.0.8
+
+- Fixes possible notification NPE
+
+22-MAY-2025: 27.0.7
+
+- Restricts notifications to own diagrams.net domains [jgraph/docker-drawio#187]
+- [conf cloud] Removes blank and smart templates from Confluence Template diagrams [DID-14800]
+- [conf cloud] Fixes editor hang in Template editor [DID-14800]
+
+16-MAY-2025: 27.0.6
+
+- Fixes paste location to use position of mouse [drawio-desktop#2096]
+
+13-MAY-2025: 27.0.5
+
+- Skips service worker install on first load
+
+12-MAY-2025: 27.0.4
+
+- Fixes image export background [jgraph/drawio-desktop#2091]
+- Adds warning for plantuml deprecation
+
+09-MAY-2025: 27.0.3
+
+- Moves bootstrap and main code to external JS files
+
+08-MAY-2025: 27.0.2
+
+- Changes cache url for app.diagrams.net
+- Builds xml2js
+
+07-MAY-2025: 27.0.1
+
+- Sorts xml2js file list deterministically
+
+07-MAY-2025: 27.0.0
+
+- Disables splash screen by default
+
+06-MAY-2025: 26.3.0
+
+- Improves XML parsing with invalid characters [DID-15090]
+- Renames Network libraries
+- AWS update
+- Updated Mermaid to v11.6.0
+- Fixes SVG output of mermaid in some special cases [#drawio-5046]
+- Fixes tab selection after label change [jgraph/drawio#5050]
+- Requires forceMigration=1 to run www.draw.io migration
+
 23-APR-2025: 26.2.15
 
 - Internal build
